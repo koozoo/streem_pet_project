@@ -29,7 +29,90 @@
    </div>
    <!--=========== Loader =============-->
 
-    {% block header %} {% endblock %}
+    <!--========== Header ==============-->
+   <header id="gen-header" class="gen-header-style-1 gen-has-sticky">
+      <div class="gen-bottom-header">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <nav class="navbar navbar-expand-lg navbar-light">
+                     <a class="navbar-brand" href="{% url 'home' %}">
+                        <img class="img-fluid logo" src="{% static 'images/logo-1.png' %}" alt="streamlab-image">
+                     </a>
+                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div id="gen-menu-contain" class="gen-menu-contain">
+                           <ul id="gen-main-menu" class="navbar-nav ml-auto">
+                              <li class="menu-item active">
+                                 <a href="{% url 'home' %}" aria-current="page">Главная</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'watch:movie' %}">Фильмы</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'watch:tv_shows' %}">Сериалы</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="#">Фильтр</a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="gen-header-info-box">
+                        <div class="gen-menu-search-block">
+                           <a href="javascript:void(0)" id="gen-seacrh-btn"><i class="fa fa-search"></i></a>
+                           <div class="gen-search-form">
+                              <form role="search" method="get" class="search-form" action="#">
+                                 <label>
+                                    <span class="screen-reader-text"></span>
+                                    <input type="search" class="search-field" placeholder="Search …" value="" name="s">
+                                 </label>
+                                 <button type="submit" class="search-submit"><span
+                                       class="screen-reader-text"></span></button>
+                              </form>
+                           </div>
+                        </div>
+                        <div class="gen-account-holder">
+                           <a href="javascript:void(0)" id="gen-user-btn"><i class="fa fa-user"></i></a>
+                           <div class="gen-account-menu">
+                              <ul class="gen-account-menu">
+                                 <!-- Pms Menu -->
+                                 <li>
+                                    <a href="log-in.html"><i class="fas fa-sign-in-alt"></i>
+                                       Вход </a>
+                                 </li>
+                                 <li>
+                                    <a href="register.html"><i class="fa fa-user"></i>
+                                       Регистрация </a>
+                                 </li>
+                                 <li>
+                                    <a href="library.html"><i class="fa fa-list"></i>
+                                       Мои фильмы </a>
+                                 </li>
+                                 <li>
+                                    <a href="library.html"><i class="fa fa-list"></i>
+                                       Мои сериалы </a>
+                                 </li>
+                                 <li>
+                                    <a href="upload-video.html"> <i class="fa fa-upload"></i>
+                                       Загрузить видео </a>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+
+                     </div>
+                     <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                     </button>
+                  </nav>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+   <!--========== Header ==============-->
 
     {% block content %} {% endblock %}
 

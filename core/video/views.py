@@ -7,11 +7,11 @@ def index(request):
 
 
 def main_show(request):
-    return ...
+    return render(request=request, template_name='video/tv-shows-home.html')
 
 
 def main_movie(request):
-    ...
+    return render(request=request, template_name='video/tv-shows-home.html')
 
 
 def show_video(request):
