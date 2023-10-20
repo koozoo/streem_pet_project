@@ -9,17 +9,22 @@ STATUS_CHOICES = [
 ]
 
 
-class VideoGroup(models.Model):
-    title = models.CharField(max_length=255)
+class Actors(models.Model):
+    name = models.CharField(max_length=180)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    bio = models.TextField(null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('actors', kwargs={'actors_slug': self.slug})
 
 
-class VideoCategories(models.Model):
+class Categories(models.Model):
     title = models.CharField(max_length=255)
-    system_title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to='category_images', null=True, blank=True)
-    video_group_id = models.ForeignKey(to=VideoGroup, on_delete=models.PROTECT)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'category_slug': self.slug})
@@ -37,19 +42,4 @@ class Genre(models.Model):
 
 class Tag(models.Model):
     ...
-
-
-class VideoTag(models.Model):
-
-    ...
-
-
-class Video(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Название')
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
-    image = models.ImageField(upload_to='video_images', blank=True, null=True)
-    storage_path = models.FilePathField(path='video_files', verbose_name='путь до файла')
-    category_id = models.ForeignKey(to=VideoCategories, on_delete=models.PROTECT)
-
-
 
