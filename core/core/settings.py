@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'video.apps.VideoConfig'
+    'video.apps.VideoConfig',
+    'home.apps.HomeConfig',
+    'tv_shows.apps.TvShowsConfig',
+    'movie.apps.MovieConfig'
 ]
 
 MIDDLEWARE = [
@@ -119,6 +122,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = 'media'
 # Default primary key field type
