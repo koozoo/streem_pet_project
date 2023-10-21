@@ -1,11 +1,11 @@
 {% load static %}
-<div class="item" style="background: url({% static 'images/background/asset-1.jpeg' %})">
+<div class="item" style="background: url({% get_media_prefix %}{{ data.images }})">
                         <div class="gen-movie-contain-style-2 h-100">
                            <div class="container h-100">
                               <div class="row flex-row-reverse align-items-center h-100">
                                  <div class="col-xl-6">
                                     <div class="gen-front-image">
-                                       <img src="{% static 'images/background/asset-1.jpeg' %}" alt="owl-carousel-banner-image">
+                                       <img src="{% get_media_prefix %}{{ data.images }}" alt="owl-carousel-banner-image">
                                        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="playBut popup-youtube popup-vimeo popup-gmaps">
                                           <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In  -->
                                           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="213.7px"
@@ -25,9 +25,9 @@
                                     </div>
                                  </div>
                                  <div class="col-xl-6">
-                                    <div class="gen-tag-line"><span>Most Viewed</span></div>
+                                    <div class="gen-tag-line"><span>Популярно сейчас</span></div>
                                     <div class="gen-movie-info">
-                                       <h3>King of Skull</h3>
+                                       <h3>{{ data.title }}</h3>
                                     </div>
                                     <div class="gen-movie-meta-holder">
                                        <ul class="gen-meta-after-title">
@@ -40,14 +40,13 @@
                                                 0 </span>
                                           </li>
                                        </ul>
-                                       <p>Streamlab is a long established fact that a reader will be distracted
-                                          by the readable content of a page The point of using Lorem Streamlab.
+                                       <p>{{ data.subject }}
                                        </p>
                                        <div class="gen-meta-info">
                                           <ul class="gen-meta-after-excerpt">
                                              <li>
                                                 <strong>Cast :</strong>
-                                                Anna Romanson,Robert Romanson
+                                                {{ data.actors }}
                                              </li>
                                              <li>
                                                 <strong>Genre :</strong>
