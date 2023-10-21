@@ -10,29 +10,38 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="gen-video-holder">
-                                    <iframe width="100%" height="550px" src="https://www.youtube.com/embed/LXb3EKWsInQ"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
+                                        <video
+                                            id="my-video"
+                                            class="video-js"
+                                            controls
+                                            preload="auto"
+                                            poster="{% get_media_prefix %}{{ data.images }}"
+                                            data-setup="{}"
+                                          >
+                                            <source src="{% get_media_prefix %}{{ data.video }}" type="video/mp4" />
+    <!--                                        <source src="MY_VIDEO.webm" type="video/webm" />-->
+                                            <p class="vjs-no-js">
+                                              To view this video please enable JavaScript, and consider upgrading to a
+                                              web browser that
+                                              <a href="https://videojs.com/html5-video-support/" target="_blank"
+                                                >supports HTML5 video</a
+                                              >
+                                            </p>
+                                        </video>
                                 </div>
                                 <div class="gen-single-movie-info">
-                                    <h2 class="gen-title">My Generation</h2>
+                                    <h2 class="gen-title">{{ data.title }}</h2>
                                     <div class="gen-single-meta-holder">
                                         <ul>
                                             <li class="gen-sen-rating">TV-PG</li>
                                             <li>
                                                 <i class="fas fa-eye">
                                                 </i>
-                                                <span>237 Views</span>
+                                                <span>{{ data.total_watch }} Views</span>
                                             </li>
                                         </ul>
                                     </div>
-                                    <p>Streamlab is a long established fact that a reader will be distracted by the
-                                        readable
-                                        content of a page when Streamlab at its layout. The point of using Lorem
-                                        Streamlab
-                                        is that it has a more-or-less normal distribution of Streamlab as opposed
-                                        Streamlab.
+                                    <p>{{ data.description }}
                                     </p>
                                     <div class="gen-after-excerpt">
                                         <div class="gen-extra-data">

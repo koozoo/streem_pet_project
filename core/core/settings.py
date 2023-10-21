@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'embed_video',
     'video.apps.VideoConfig',
     'home.apps.HomeConfig',
     'tv_shows.apps.TvShowsConfig',

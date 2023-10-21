@@ -1,11 +1,12 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
-from movie.models import Movie, MovieTrailer, ActorMovie
+from movie.models import Movie, ActorMovie
 
 
 # Register your models here.
 class MovieAdmin(admin.ModelAdmin):
     list_display = ['title', 'status', 'category_id']
+    search_fields = ['title']
     ordering = ["title"]
     actions = ["make_published"]
     prepopulated_fields = {"slug": ("title",)}
@@ -26,16 +27,10 @@ class MovieAdmin(admin.ModelAdmin):
         )
 
 
-class MovieTrailerAdmin(admin.ModelAdmin):
-    list_display = ['movie_id', 'status']
-    ordering = ["movie_id"]
-
-
 class ActorMovieAdmin(admin.ModelAdmin):
     list_display = ['movie_id', 'actor_id']
     ordering = ["movie_id"]
 
 
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(MovieTrailer, MovieTrailerAdmin)
 admin.site.register(ActorMovie, ActorMovieAdmin)
