@@ -5,7 +5,10 @@ from video.models import Categories, Actors
 
 # Create your views here.
 def index(request):
-    query = Movie.objects.filter(status='p')
-    item = get_object_or_404(query.all())
-    context = {'test': item}
+
+    banner_videos = Movie.objects.filter(status='p')
+    top_10 = Movie.objects.filter(status='p')
+
+    context = {'banner_videos': banner_videos,
+               'top_10': top_10}
     return render(request, 'home/index.html', context)

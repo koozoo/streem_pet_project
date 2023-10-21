@@ -19,6 +19,7 @@ class Movie(models.Model):
     actors = models.TextField(blank=True, null=True)
     category_id = models.ForeignKey(to=video_models.Categories, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
+    # total_watch = models.DecimalField(max_digits=12, decimal_places=0)
 
     def get_absolute_url(self):
         return reverse('movie', kwargs={'movie_slug': self.slug})
