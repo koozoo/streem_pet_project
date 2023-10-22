@@ -4892,7 +4892,7 @@ Movies Single
 }
 
 /*==========*/
-.gen-video-holder video {
+.gen-video-holder .my-video-dimensions {
     width: 100% !important;
     height: 70vh !important;
     border: none;
@@ -5152,7 +5152,7 @@ Movies Single
 }
 
 @media(max-width:1023px) {
-    .gen-video-holder video {
+    .gen-video-holder .my-video-dimensions {
         height: 60vh !important;
     }
 
@@ -5171,13 +5171,13 @@ Movies Single
 }
 
 @media(max-width:979px) {
-    .gen-video-holder video {
+    .gen-video-holder .my-video-dimensions {
         height: 48vh !important;
     }
 }
 
 @media(max-width:767px) {
-    .gen-video-holder video {
+    .gen-video-holder .my-video-dimensions {
         height: 29vh !important;
     }
 

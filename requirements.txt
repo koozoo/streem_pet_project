@@ -1,2 +1,4 @@
 python-dotenv~=1.0.0
 Django~=4.2.6
+opencv-python~=4.8.1.78
+django-embed-video~=1.4.9
