@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+
 # Create your models here.
 STATUS_CHOICES = [
     ("d", "Draft"),
@@ -43,3 +44,6 @@ class Genre(models.Model):
 class Tag(models.Model):
     ...
 
+
+# class Rating(models.Model):
+#     user_id = models.ForeignKey()
