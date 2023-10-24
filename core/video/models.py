@@ -34,7 +34,7 @@ class Categories(models.Model):
         return f"<{self.__class__.__name__}: {self}>"
 
     def __str__(self):
-        return f"ID: {self.pk}: {self.title}"
+        return f"{self.title}"
 
 
 class Genre(models.Model):
@@ -47,3 +47,6 @@ class Tag(models.Model):
 
 # class Rating(models.Model):
 #     user_id = models.ForeignKey()
+
+class Showrunner:
+    ...

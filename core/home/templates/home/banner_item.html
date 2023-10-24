@@ -49,6 +49,14 @@
                                                 {{ data.actors }}
                                              </li>
                                              <li>
+                                                <strong>Category :</strong>
+                                                <span>
+
+                                                   <a href="{% url 'home' %}">
+                                                      {{ data.category_id|capfirst }} </a>
+                                                </span>
+                                             </li>
+                                             <li>
                                                 <strong>Genre :</strong>
                                                 <span>
                                                    <a href="{% url 'home' %}">
@@ -87,9 +95,15 @@
                                     </div>
                                     <div class="gen-movie-action">
                                        <div class="gen-btn-container">
+                                          {% if type == 'movie' %}
                                           <a href="{% url 'movie:detail_movie' data.slug %}" class="gen-button .gen-button-dark">
                                              <i aria-hidden="true" class="fas fa-play"></i> <span class="text">Смотреть</span>
                                           </a>
+                                          {% else %}
+                                          <a href="{% url 'shows:detail_shows' data.slug %}" class="gen-button .gen-button-dark">
+                                             <i aria-hidden="true" class="fas fa-play"></i> <span class="text">Смотреть</span>
+                                          </a>
+                                          {% endif %}
                                        </div>
                                     </div>
                                  </div>

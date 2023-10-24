@@ -5,9 +5,9 @@ from movie.models import Movie, ActorMovie
 
 # Register your models here.
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ['title', 'status', 'category_id']
+    list_display = ['title', 'pk', 'status', 'category_id', 'total_watch']
     search_fields = ['title']
-    ordering = ["title"]
+    ordering = ["-total_watch"]
     actions = ["make_published"]
     prepopulated_fields = {"slug": ("title",)}
 
@@ -29,7 +29,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 class ActorMovieAdmin(admin.ModelAdmin):
     list_display = ['movie_id', 'actor_id']
-    ordering = ["movie_id"]
+    ordering = ["-movie_id"]
 
 
 admin.site.register(Movie, MovieAdmin)

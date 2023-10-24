@@ -24,6 +24,7 @@ class Movie(models.Model):
     total_watch = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     publish_social = models.BooleanField(default=False)
     trailer_link = EmbedVideoField()
+    # showrunner = models.ForeignKey(to=video_models.Showrunner, on_delete=models.PROTECT)
 
     def get_absolute_url(self):
         return reverse('movie', kwargs={'movie_slug': self.slug})
@@ -33,6 +34,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"ID: {self.pk}: {self.title}"
+
+    class Meta:
+        ordering = ['-total_watch']
 
 
 class ActorMovie(models.Model):

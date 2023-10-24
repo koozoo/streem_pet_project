@@ -29,6 +29,7 @@ class Shows(models.Model):
     trailer_link = EmbedVideoField()
     seasons = models.IntegerField(default=1)
     premier_dt = models.DateField()
+    # showrunner = models.ForeignKey(to=video_models.Showrunner, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.title} | ID:{self.pk}"
@@ -44,13 +45,13 @@ class ShowsItem(models.Model):
                              validators=[FileExtensionValidator(allowed_extensions=['mp4'],
                                                                 message=_messages['error_validate'])])
     total_watch = models.IntegerField(default=0)
+    # status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w', verbose_name='Статус')
 
     def __str__(self):
         return f"Shows_id: {self.shows_id} | {self.title} | season: {self.season} | series {self.series}"
 
     class Meta:
         ordering = ['season', 'series']
-
 
 
 class GenreShows(models.Model):
