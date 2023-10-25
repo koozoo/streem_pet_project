@@ -25,12 +25,11 @@ class HomePageBuilder:
         'netflix': None
     }
 
-    def __init__(self, request, page_title):
+    def __init__(self, request):
         self.request = request
-        self.page_title = page_title
 
-    def _main_banner(self, movies, shows):
-
+    def _main_banner(self):
+        movies, shows = self._get_banner_movie(), self._get_banner_shows()
         block_data = {'main_banner': []}
 
         for item in movies:
@@ -74,11 +73,11 @@ class HomePageBuilder:
     def _netflix(self):
         ...
 
-    def _get_shows(self):
-        return shows_models.Shows.objects.filter(status='p', total_watch__gte=0)[:5]
+    def _get_banner_shows(self, offset: int = 0, limit: int = 5):
+        return shows_models.Shows.objects.filter(status='p', total_watch__gte=0)[offset:limit]
 
-    def _get_movie(self):
-        return movie_models.Movie.objects.filter(status='p', total_watch__gte=0)[:5]
+    def _get_banner_movie(self, offset: int = 0, limit: int = 5):
+        return movie_models.Movie.objects.filter(status='p', total_watch__gte=0)[offset:limit]
 
     def _get_cache_shows(self):
         return movie_models.Movie.objects.filter(status='p')
@@ -86,24 +85,12 @@ class HomePageBuilder:
     def _get_cache_movie(self):
         return shows_models.Shows.objects.filter(status='p')
 
-    def _build_home_page(self):
-
-        shows = self._get_shows()
-        movies = self._get_movie()
+    def build_home_page(self):
 
         for block_key, block_value in self.__default_content_block.items():
 
             match block_key:
                 case 'main_banner':
-                    return self._main_banner(movies=movies, shows=shows)
+                    return self._main_banner()
 
         return self.__default_content_block
-
-    def _route(self):
-
-        match self.page_title:
-            case 'home':
-                return self._build_home_page()
-
-    def build(self):
-        return self._route()

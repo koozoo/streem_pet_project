@@ -97,11 +97,11 @@
                                        <div class="gen-btn-container">
                                           {% if type == 'movie' %}
                                           <a href="{% url 'movie:detail_movie' data.slug %}" class="gen-button .gen-button-dark">
-                                             <i aria-hidden="true" class="fas fa-play"></i> <span class="text">Смотреть</span>
+                                             <i aria-hidden="true" class="custom-btn"></i> <span class="text">Подробнее...</span>
                                           </a>
                                           {% else %}
                                           <a href="{% url 'shows:detail_shows' data.slug %}" class="gen-button .gen-button-dark">
-                                             <i aria-hidden="true" class="fas fa-play"></i> <span class="text">Смотреть</span>
+                                             <i aria-hidden="true" class="custom-btn"></i> <span class="text">Подробнее...</span>
                                           </a>
                                           {% endif %}
                                        </div>

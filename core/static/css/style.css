@@ -561,7 +561,7 @@ input[type="button"],
     overflow: hidden;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
-    border-radius: 0px;
+    border-radius: 18px;
 }
 
 .gen-button-dark {
