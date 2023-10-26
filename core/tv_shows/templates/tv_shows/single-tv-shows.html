@@ -96,7 +96,7 @@
                                                     <div class="gen-episode-img">
                                                         <img src="{% static 'images/background/asset-15.jpeg' %}" alt="stream-lab-image">
                                                         <div class="gen-movie-action">
-                                                            <a href="{% url 'shows:watch_series' data.slug item.pk %}" class="gen-button">
+                                                            <a href="{% url 'shows:watch_series' data.slug item.season item.pk %}" class="gen-button">
                                                                 <i class="fa fa-play"></i>
                                                             </a>
                                                         </div>
@@ -137,7 +137,7 @@
                                                     <div class="gen-episode-img">
                                                         <img src="{% static 'images/background/asset-15.jpeg' %}" alt="stream-lab-image">
                                                         <div class="gen-movie-action">
-                                                            <a href="{% url 'shows:watch_series' data.slug item.pk %}" class="gen-button">
+                                                            <a href="{% url 'shows:watch_series' data.slug item.season item.pk %}" class="gen-button">
                                                                 <i class="fa fa-play"></i>
                                                             </a>
                                                         </div>

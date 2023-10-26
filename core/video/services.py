@@ -3,7 +3,7 @@ from typing import IO, Generator
 from django.shortcuts import get_object_or_404
 
 from movie.models import Movie
-from tv_shows.models import Shows
+from tv_shows.models import Shows, ShowsItem
 
 
 def ranged(
@@ -30,12 +30,12 @@ def ranged(
         file.close()
 
 
-def open_file(request, slug: str, type_video: str):
+def open_file(request, slug: str = None, type_video: str = 'movie', video_id: int = None):
 
     if type_video == "movie":
         _video = get_object_or_404(Movie, slug=slug)
     else:
-        _video = get_object_or_404(Shows, slug=slug)
+        _video = get_object_or_404(ShowsItem, pk=video_id)
 
     path = Path(_video.video.path)
 

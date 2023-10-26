@@ -30,11 +30,17 @@ def single_shows(request, shows_slug: str):
         'total_video': total_video,
         'total_seasons': [i + 1 for i in range(data.seasons)]
     }
-    print(context)
+
     return render(request, 'tv_shows/single-tv-shows.html', context=context)
 
 
-def watch_series(request, shows_slug, pk_series):
-    context = {}
-    print(pk_series, shows_slug)
+def watch_series(request, shows_slug, season, pk_series):
+    shows_info = get_object_or_404(Shows, slug=shows_slug)
+    shows_item = get_object_or_404(ShowsItem, pk=shows_info.pk)
+
+    context = {
+        'data': shows_info,
+        'video': shows_item
+    }
+    print(context)
     return render(request, 'tv_shows/single-episode.html', context=context)
