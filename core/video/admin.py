@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
-from video.models import Categories, Actors, Showrunner, Genre
+from video.models import Categories, Actors, Genre
+from showrunner.models import Showrunner
 
 
 # Register your models here.
@@ -24,6 +25,7 @@ class CategoriesAdmin(admin.ModelAdmin):
             % updated,
             messages.SUCCESS,
         )
+
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):

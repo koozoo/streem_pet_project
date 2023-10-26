@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'video.apps.VideoConfig',
     'home.apps.HomeConfig',
     'tv_shows.apps.TvShowsConfig',
-    'movie.apps.MovieConfig'
+    'movie.apps.MovieConfig',
+    'showrunner.apps.ShowrunnerConfig'
 ]
 
 MIDDLEWARE = [

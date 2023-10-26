@@ -3,8 +3,7 @@ from django.core.validators import FileExtensionValidator
 from django.urls import reverse
 from embed_video.fields import EmbedVideoField
 from video import models as video_models
-
-from video.models import Genre
+from showrunner.models import Showrunner
 
 # Create your models here.
 STATUS_CHOICES = [
@@ -31,8 +30,8 @@ class Shows(models.Model):
     trailer_link = EmbedVideoField()
     seasons = models.IntegerField(default=1)
     premier_dt = models.DateField()
-    showrunner = models.ForeignKey(to=video_models.Showrunner, on_delete=models.PROTECT)
-    genre = models.ManyToManyField(to=Genre)
+    showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
+    genre = models.ManyToManyField(to=video_models.Genre)
 
     def __str__(self):
         return f"{self.title} | ID:{self.pk}"
