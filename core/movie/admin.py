@@ -3,8 +3,9 @@ from django.utils.translation import ngettext
 from movie.models import Movie, ActorMovie
 
 
-# Register your models here.
+@admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
+
     list_display = ['title', 'pk', 'status', 'category_id', 'total_watch']
     search_fields = ['title']
     ordering = ["-total_watch"]
@@ -32,5 +33,5 @@ class ActorMovieAdmin(admin.ModelAdmin):
     ordering = ["-movie_id"]
 
 
-admin.site.register(Movie, MovieAdmin)
+# admin.site.register(Movie, MovieAdmin)
 admin.site.register(ActorMovie, ActorMovieAdmin)

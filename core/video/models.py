@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 
-
 # Create your models here.
 STATUS_CHOICES = [
     ("d", "Draft"),
@@ -69,3 +68,12 @@ class Showrunner(models.Model):
 
     def __str__(self):
         return self.title
+
+
+_messages = {
+    'error_validate': "Ошибка при загрузке фалйла, пожалуйста убедитесь что файл с рашрением .mp4"
+}
+
+
+
+    
