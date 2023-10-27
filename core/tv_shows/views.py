@@ -1,7 +1,10 @@
+from pathlib import Path
+
 from django.shortcuts import render, get_object_or_404
 
 from tv_shows.models import Shows, ShowsItem
-from movie.utils import get_duration_video
+from video.services import ConvertVideo
+
 
 
 def main_shows(request):
@@ -23,6 +26,12 @@ def single_shows(request, shows_slug: str):
 
         total_video += 1
     print('seasons', seasons)
+
+    for season_number, season_value in seasons.items():
+        for episode in season_value:
+            convert_video = ConvertVideo(episode.video.video, 'mp4')
+            print(convert_video.start())
+
     context = {
         'data': data,
         'video_seasons': seasons,
@@ -38,6 +47,7 @@ def watch_series(request, shows_slug, season, pk_series):
     print(shows_info)
     shows_item = get_object_or_404(ShowsItem, pk=pk_series)
     print('items', shows_item)
+
     context = {
         'data': shows_info,
         'video': shows_item

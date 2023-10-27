@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from movie.models import Movie
-from movie.utils import get_duration_video
 from pathlib import Path
 
 
@@ -17,7 +16,7 @@ def single_movie(request, movie_slug):
     context = {
         'data': data,
         'media_type': 'movie',
-        'duration_video': get_duration_video(Path(data.video.path))
+        'duration_video': 0
     }
 
     return render(request, 'movie/single-movie.html', context=context)
