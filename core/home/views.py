@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from movie.models import Movie
-from video.models import Categories, Actors
 from home import utils
 
 

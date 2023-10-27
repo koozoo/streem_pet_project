@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
-from movie.models import Movie, ActorMovie
+from movie.models import Movie
 
 
 @admin.register(Movie)
@@ -26,12 +26,3 @@ class MovieAdmin(admin.ModelAdmin):
             % updated,
             messages.SUCCESS,
         )
-
-
-class ActorMovieAdmin(admin.ModelAdmin):
-    list_display = ['movie_id', 'actor_id']
-    ordering = ["-movie_id"]
-
-
-# admin.site.register(Movie, MovieAdmin)
-admin.site.register(ActorMovie, ActorMovieAdmin)

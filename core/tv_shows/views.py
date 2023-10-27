@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404
 
 from tv_shows.models import Shows, ShowsItem
 from movie.utils import get_duration_video
-from video.models import Genre
 
 
 def main_shows(request):
@@ -23,7 +22,7 @@ def single_shows(request, shows_slug: str):
             seasons[f'{video.season}'] = [video]
 
         total_video += 1
-
+    print('seasons', seasons)
     context = {
         'data': data,
         'video_seasons': seasons,
@@ -36,8 +35,9 @@ def single_shows(request, shows_slug: str):
 
 def watch_series(request, shows_slug, season, pk_series):
     shows_info = get_object_or_404(Shows, slug=shows_slug)
-    shows_item = get_object_or_404(ShowsItem, pk=shows_info.pk)
-
+    print(shows_info)
+    shows_item = get_object_or_404(ShowsItem, pk=pk_series)
+    print('items', shows_item)
     context = {
         'data': shows_info,
         'video': shows_item

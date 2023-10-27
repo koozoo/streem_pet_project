@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'tv_shows.apps.TvShowsConfig',
     'movie.apps.MovieConfig',
-    'showrunner.apps.ShowrunnerConfig'
+    'showrunner.apps.ShowrunnerConfig',
+    'actor.apps.ActorConfig',
+    'genre.apps.GenreConfig',
+    'categories.apps.CategoriesConfig'
 ]
 
 MIDDLEWARE = [

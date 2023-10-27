@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from movie.models import Movie
 from tv_shows.models import Shows, ShowsItem
 
+from video.models import Video
+
 
 def ranged(
         file: IO[bytes],
@@ -33,9 +35,11 @@ def ranged(
 def open_file(request, slug: str = None, type_video: str = 'movie', video_id: int = None):
 
     if type_video == "movie":
-        _video = get_object_or_404(Movie, slug=slug)
+        objects = get_object_or_404(Movie, slug=slug)
+        _video = get_object_or_404(Video, pk=objects.video.pk)
     else:
-        _video = get_object_or_404(ShowsItem, pk=video_id)
+        objects = get_object_or_404(ShowsItem, pk=video_id)
+        _video = get_object_or_404(Video, pk=objects.video.pk)
 
     path = Path(_video.video.path)
 

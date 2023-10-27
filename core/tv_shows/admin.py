@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
 from tv_shows import models as shows_models
+from video.models import Video
 
 
 class ShowsItemInline(admin.TabularInline):
@@ -10,7 +11,7 @@ class ShowsItemInline(admin.TabularInline):
 
 class ShowsAdmin(admin.ModelAdmin):
     list_display = ['title', 'status', 'category_id']
-    list_per_page = 5
+    list_per_page = 10
     search_fields = ['title']
     list_filter = ['status']
     ordering = ["title"]
@@ -38,7 +39,7 @@ class ShowsAdmin(admin.ModelAdmin):
 
 class ShowsItemAdmin(admin.ModelAdmin):
     list_display = ['shows_id', 'season', 'series', 'title']
-    list_per_page = 5
+    list_per_page = 10
     ordering = ["shows_id"]
 
 

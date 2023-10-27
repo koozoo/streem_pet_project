@@ -1,9 +1,13 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
-from django.urls import reverse
 from embed_video.fields import EmbedVideoField
-from video import models as video_models
+
+from actor.models import Actors
+from categories.models import Categories
+from genre.models import Genre
 from showrunner.models import Showrunner
+
+from video.models import Video
 
 # Create your models here.
 STATUS_CHOICES = [
@@ -23,7 +27,7 @@ class Shows(models.Model):
     subject = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to='shows/images/%Y/%m/%d', null=True, blank=True)
-    category_id = models.ForeignKey(to=video_models.Categories, on_delete=models.PROTECT)
+    category_id = models.ForeignKey(to=Categories, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
     total_watch = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     publish_social = models.BooleanField(default=False)
@@ -31,7 +35,7 @@ class Shows(models.Model):
     seasons = models.IntegerField(default=1)
     premier_dt = models.DateField()
     showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
-    genre = models.ManyToManyField(to=video_models.Genre)
+    genre = models.ManyToManyField(to=Genre)
 
     def __str__(self):
         return f"{self.title} | ID:{self.pk}"
@@ -42,37 +46,13 @@ class ShowsItem(models.Model):
     season = models.IntegerField()
     series = models.IntegerField()
     premier_dt = models.DateField()
-    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT)
-    video = models.FileField(upload_to='shows/video/%Y/%m/%d',
-                             validators=[FileExtensionValidator(allowed_extensions=['mp4'],
-                                                                message=_messages['error_validate'])])
+    video = models.ForeignKey(to=Video, on_delete=models.PROTECT, related_name='origin_shows_video')
+    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT, related_name='parent_shows_item')
     total_watch = models.IntegerField(default=0)
-    duration_in_seconds = models.IntegerField(default=0)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w', verbose_name='Статус')
 
     def __str__(self):
-        return f"Shows_id: {self.shows_id} | {self.title} | season: {self.season} | series {self.series}"
+        return f"Shows: {self.shows_id} | ID: {self.pk} | {self.title} | season: {self.season} | series {self.series}"
 
     class Meta:
         ordering = ['season', 'series']
-
-
-class GenreShows(models.Model):
-    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT)
-    genre_id = models.ForeignKey(to=video_models.Genre, on_delete=models.PROTECT)
-
-
-class ActorShows(models.Model):
-    actor_id = models.ForeignKey(to=video_models.Actors, on_delete=models.PROTECT)
-    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT)
-
-
-class RatingShows(models.Model):
-    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT)
-    rating = models.DecimalField(max_digits=1, decimal_places=1, default=0)
-    total_vote = models.ImageField(default=0)
-
-
-class RatingShowsUser(models.Model):
-    shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT)
-    rating = models.DecimalField(max_digits=1, decimal_places=1, default=0)

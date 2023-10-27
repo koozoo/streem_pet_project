@@ -1,8 +1,13 @@
 from django.db import models
 from embed_video.fields import EmbedVideoField
 from django.urls import reverse
-from video import models as video_models
 
+from categories.models import Categories
+from actor.models import Actors
+
+from genre.models import Genre
+from showrunner.models import Showrunner
+from video.models import Video
 
 STATUS_CHOICES = [
     ("d", "Draft"),
@@ -17,14 +22,15 @@ class Movie(models.Model):
     subject = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to='movie_images/%Y/%m/%d', null=True, blank=True)
-    video = models.FileField(upload_to='movie_video/%Y/%m/%d')
-    actors = models.TextField(blank=True, null=True)
-    category_id = models.ForeignKey(to=video_models.Categories, on_delete=models.PROTECT)
+    video = models.ForeignKey(to=Video, on_delete=models.PROTECT, related_name='origin_movie_video')
+    actors = models.TextField(blank=True, null=True) # TODO many-to-many
+    category_id = models.ForeignKey(to=Categories, on_delete=models.PROTECT, related_name='category')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
     total_watch = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     publish_social = models.BooleanField(default=False)
-    trailer_link = EmbedVideoField()
-    # showrunner = models.ForeignKey(to=video_models.Showrunner, on_delete=models.PROTECT)
+    trailer_link = EmbedVideoField(null=True, blank=True)
+    showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
+    genre = models.ManyToManyField(to=Genre)
 
     def get_absolute_url(self):
         return reverse('movie', kwargs={'movie_slug': self.slug})
@@ -37,8 +43,3 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ['-total_watch']
-
-
-class ActorMovie(models.Model):
-    actor_id = models.ForeignKey(to=video_models.Actors, on_delete=models.PROTECT)
-    movie_id = models.ForeignKey(to=Movie, on_delete=models.PROTECT)
