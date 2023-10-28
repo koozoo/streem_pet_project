@@ -8,3 +8,52 @@ services:
       - ./core:/core
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+
+    entrypoint:
+      - DB_NAME=DB_NAME
+      - DB_USER=DB_USER
+      - DB_PASS=DB_PASS
+      - DB_HOST=DB_HOST
+
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    entrypoint:
+      - POSTGRES_DB=DB_NAME
+      - POSTGRES_USER=DB_USER
+      - POSTGRES_PASS=DB_PASS
+
+  redis:
+    image: redis
+    hostname: redis
+
+
+  worker:
+    build:
+      context: .
+    hostname: worker
+    entrypoint: celery
+    command: -A celery_app.app worker -L INFO
+    volumes:
+      - ./core:/core
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  flower:
+    build:
+      context: .
+    hostname: flower
+    entrypoint: celery
+    command: -A celery_app.app flower
+    volumes:
+      - ./core:/core
+    links:
+      - redis
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"

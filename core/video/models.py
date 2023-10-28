@@ -25,7 +25,7 @@ class Video(models.Model):
     title = models.CharField(max_length=255)
     type = models.CharField(max_length=1, choices=TYPE, default='m')
     video = models.FileField(upload_to='video/origin/%Y/%m/%d')
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w', verbose_name='Статус')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='n', verbose_name='Статус')
 
     def __str__(self):
         return f'{self.title} оригинальное видео'

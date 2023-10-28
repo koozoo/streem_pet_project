@@ -1,6 +1,7 @@
 import datetime
-import subprocess
 import ffmpeg
+import uuid
+import moviepy.editor as moviepy
 
 from pathlib import Path
 from typing import IO, Generator
@@ -38,7 +39,6 @@ def ranged(
 
 
 def open_file(request, slug: str = None, type_video: str = 'movie', video_id: int = None):
-
     if type_video == "movie":
         objects = get_object_or_404(Movie, slug=slug)
         _video = get_object_or_404(Video, pk=objects.video.pk)
@@ -69,30 +69,63 @@ def open_file(request, slug: str = None, type_video: str = 'movie', video_id: in
 
 class ConvertVideo:
 
+    _resolution_format = {
+        'HD': {
+            'width': 720,
+            'height': 1280
+        },
+        'FHD': {
+            'width': 1080,
+            'height': 1920
+        },
+        'SD': {
+            'width': 480,
+            'height': 720
+        },
+        '2K': {
+            'width': 1440,
+            'height': 2560
+        },
+        '4K': {
+            'width': 2160,
+            'height': 3840
+        }
+    }
+
     def __init__(self, video_path, convert_to: str):
         self.origin_video = Path(video_path.path)
         self.convert_to = convert_to
 
-    def _subprocess(self, ):
-        ...
-
-    def _convert_avi_to_mp4(self, input_format):
+    def _convert_to_mp4(self, input_format, output_file_name):
 
         try:
-            streem = ffmpeg.input(self.origin_video)
-            streem = ffmpeg.output(streem, f'')
+            if input_format in ['avi', 'webm']:
+                # moviepy convert
+                clip = moviepy.VideoFileClip(str(self.origin_video))
+                clip.write_videofile(output_file_name+'.mp4')
+            else:
+                # ffmpeg convert
+                streem = ffmpeg.input(self.origin_video)
+                streem = ffmpeg.output(streem, f'{output_file_name}.mp4')
+                ffmpeg.run(streem)
+
         except Exception as e:
             print(e)
 
-
-    def _convert_to_avi(self, input_format):
+    def _convert_to_avi(self, input_format, output_file_name):
         ...
 
-    def _convert_to_webm(self, input_format):
-        ...
+    def _convert_to_webm(self, input_format, output_file_name):
+        if input_format in ['mp4', 'avi']:
+            # moviepy convert
+            clip = moviepy.VideoFileClip(str(self.origin_video))
+            clip.write_videofile(output_file_name + '.webm')
 
-    def _convert_to_mkv(self, input_format):
-        ...
+    def _convert_to_mkv(self, input_format, output_file_name):
+        # ffmpeg convert
+        streem = ffmpeg.input(self.origin_video)
+        streem = ffmpeg.output(streem, f'{output_file_name}.mkv')
+        ffmpeg.run(streem)
 
     def _get_duration_video(self) -> dict:
         # create video capture object
@@ -113,28 +146,31 @@ class ConvertVideo:
 
         return result
 
-    def create_new_object(self):
-        ...
+    def _object_update(self, type_: str):
+        print(type_)
+
+    def _create_object(self, type_: str):
+        print(type_)
 
     def check_format(self):
-        return str(self.origin_video).split('.')[-1]
+        data = str(self.origin_video).split('.')
+
+        return {'format': data[-1],
+                'output_file_name': f'{".".join(data[:-1])}.{uuid.uuid4()}'
+                }
 
     def check_resolution(self):
         return ''
 
-    def convert_route(self, format_: str):
+    def convert_route(self, format_: str, output_file_name):
         if self.convert_to != format_:
-            if format_ == 'avi':
-                match self.convert_to:
-                    case 'mp4':
-                        return self._convert_avi_to_mp4(input_format=format_)
+            match self.convert_to:
+                case 'mp4':
+                    return self._convert_to_mp4(input_format=format_, output_file_name=output_file_name)
 
     def start(self):
-        _format = self.check_format()
+        _format_data = self.check_format()
         _resolution = self.check_resolution()
         _duration = self._get_duration_video()
 
-        print(self.convert_route(format_=_format))
-
-
-
+        print(self.convert_route(format_=_format_data['format'], output_file_name=_format_data['output_file_name']))

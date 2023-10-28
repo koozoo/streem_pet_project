@@ -13,7 +13,7 @@ class Genre(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to='genre_images', null=True, blank=True)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='p', verbose_name='Статус')
 
     def get_absolute_url(self):
         return reverse('genre', kwargs={'genre_slug': self.slug})
