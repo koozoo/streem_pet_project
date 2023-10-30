@@ -26,10 +26,10 @@ def single_shows(request, shows_slug: str):
 
         total_video += 1
 
-    # for season_number, season_value in seasons.items():
-    #     for episode in season_value:
-    #         convert_video = ConvertVideo(episode.video.video, 'mp4')
-    #         print(convert_video.start())
+    for season_number, season_value in seasons.items():
+        for episode in season_value:
+            convert_video = ConvertVideo(episode.video.video, 'mp4')
+            print(convert_video.check_resolution())
 
     context = {
         'data': data,

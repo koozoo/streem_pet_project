@@ -43,6 +43,19 @@ services:
     depends_on:
       - redis
 
+  worker2:
+    build:
+      context: .
+    hostname: worker2
+    entrypoint: celery
+    command: -A celery_app.app worker -L INFO
+    volumes:
+      - ./core:/core
+    links:
+      - redis
+    depends_on:
+      - redis
+
   flower:
     build:
       context: .

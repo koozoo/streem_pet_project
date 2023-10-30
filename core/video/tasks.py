@@ -1,25 +1,42 @@
+import uuid
+
 from celery import shared_task
 from .services import ConvertVideo
 from celery_app import app
-from video.models import Video
-
-
-@shared_task
-def task_convert_to_mp4(input_file):
-    converter = ConvertVideo(video_path=input_file, convert_to='mp4')
-    result = converter.start()
-    print(result)
+from video.models import Video, VideoForStreem
 
 
 @app.task
 def start_render_video():
-    print('start')
-    # VideoForStreem
-    # all_video_to_render = Video.objects.filter(status='n')
-    # print(all_video_to_render)
-    # new_video = Video(title=title,
-    #                   type='m',
-    #                   video='video/origin/2023/10/28/One.Piece.S01E03.rus.LostFilm.TV.avi',
-    #                   status='n')
-    # new_video.save()
-    return 'test'
+    all_video_to_render = Video.objects.filter(status='n')
+
+    if all_video_to_render:
+        Video.objects.filter(status='n').update(status='p')
+
+        for video in all_video_to_render:
+            render_object = ConvertVideo(video_path=video.video,
+                                         convert_to='mp4',
+                                         origin_video_object=video)
+            if render_object:
+                result = render_object.start()
+                print(result)
+    else:
+        print('No render objects')
+
+
+@app.task
+def add_video_for_stream(origin_video_id: int,
+                         type_: str,
+                         title: str,
+                         resolution: str,
+                         duration: int,
+                         video_path: str):
+
+    new_video = VideoForStreem(title=title,
+                               type=type_,
+                               origin_video=origin_video_id,
+                               resolution=resolution,
+                               duration_in_seconds=duration,
+                               video=video_path,
+                               status='n')
+    new_video.save()

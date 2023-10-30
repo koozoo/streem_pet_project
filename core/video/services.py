@@ -1,4 +1,8 @@
+import dataclasses
 import datetime
+from subprocess import PIPE, run
+import shlex
+
 import ffmpeg
 import uuid
 import moviepy.editor as moviepy
@@ -67,6 +71,15 @@ def open_file(request, slug: str = None, type_video: str = 'movie', video_id: in
     return file, status_code, content_length, content_range
 
 
+@dataclasses.dataclass
+class VideoStreemData:
+    title: str
+    type: str
+    origin_video: int
+    resolution: str
+    duration_in_seconds: int
+    video: str
+
 class ConvertVideo:
 
     _resolution_format = {
@@ -92,9 +105,17 @@ class ConvertVideo:
         }
     }
 
-    def __init__(self, video_path, convert_to: str):
+    def __init__(self, video_path, convert_to: str, origin_video_object: VideoStreemData = None):
+        self.origin_video_object = origin_video_object
         self.origin_video = Path(video_path.path)
         self.convert_to = convert_to
+
+    def __subprocess(self, command):
+        try:
+            result = run(shlex.split(command), stdout=PIPE, stderr=PIPE, universal_newlines=True)
+            return result.stdout
+        except Exception as e:
+            print(f'Unknown error. {e}')
 
     def _convert_to_mp4(self, input_format, output_file_name):
 
@@ -160,7 +181,8 @@ class ConvertVideo:
                 }
 
     def check_resolution(self):
-        return ''
+        return self.__subprocess(f"ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of "
+                                 f"default=nw=1:nk=1 {str(self.origin_video)}").split("\n")
 
     def convert_route(self, format_: str, output_file_name):
         if self.convert_to != format_:
@@ -168,9 +190,18 @@ class ConvertVideo:
                 case 'mp4':
                     return self._convert_to_mp4(input_format=format_, output_file_name=output_file_name)
 
-    def start(self):
+    def start(self) -> list[VideoStreemData]:
         _format_data = self.check_format()
-        _resolution = self.check_resolution()
-        _duration = self._get_duration_video()
 
-        print(self.convert_route(format_=_format_data['format'], output_file_name=_format_data['output_file_name']))
+        if self.convert_to != _format_data['format']:
+            _duration = self._get_duration_video()
+            original_resolution = self.check_resolution()
+
+            # for i in original_resolution:
+            #     print('line: ', i)
+            for resolution_title, resolution in self._resolution_format.items():
+                print(f'START RENDER OBJECT: <ID: {id(self.origin_video_object)}> --->  video title: {self.origin_video_object.title} key: {resolution_title} - value: {resolution} | duration: {_duration}')
+
+            # print(self.convert_route(format_=_format_data['format'], output_file_name=_format_data['output_file_name']))
+        else:
+            return []
