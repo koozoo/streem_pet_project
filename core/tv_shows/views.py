@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 
 from tv_shows.models import Shows, ShowsItem
 from video.services import ConvertVideo
-
+from video.models import Video, VideoForStreem
 
 
 def main_shows(request):
@@ -18,6 +18,7 @@ def single_shows(request, shows_slug: str):
     # genre = ', '.join(Genre.objects.filter(shows_id=data.pk, status='p')).rstrip(',')
     seasons = {}
     total_video = 0
+
     for video in videos:
         if str(video.season) in seasons:
             seasons[f'{video.season}'] += [video]
@@ -25,11 +26,6 @@ def single_shows(request, shows_slug: str):
             seasons[f'{video.season}'] = [video]
 
         total_video += 1
-
-    for season_number, season_value in seasons.items():
-        for episode in season_value:
-            convert_video = ConvertVideo(episode.video.video, 'mp4')
-            print(convert_video.check_resolution())
 
     context = {
         'data': data,
@@ -43,13 +39,14 @@ def single_shows(request, shows_slug: str):
 
 def watch_series(request, shows_slug, season, pk_series):
     shows_info = get_object_or_404(Shows, slug=shows_slug)
-    print(shows_info)
     shows_item = get_object_or_404(ShowsItem, pk=pk_series)
-    print('items', shows_item)
+
+    shows_videos = VideoForStreem.objects.filter(origin_video=pk_series)
 
     context = {
         'data': shows_info,
-        'video': shows_item
+        'shows_item': shows_item,
+        'streem_items': shows_videos
     }
     print(context)
     return render(request, 'tv_shows/single-episode.html', context=context)

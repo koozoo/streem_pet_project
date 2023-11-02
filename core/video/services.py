@@ -75,33 +75,33 @@ def open_file(request, slug: str = None, type_video: str = 'movie', video_id: in
 class VideoStreemData:
     title: str
     type: str
-    origin_video: int
+    origin_video: Video
     resolution: str
     duration_in_seconds: int
     video: str
 
-class ConvertVideo:
 
+class ConvertVideo:
     _resolution_format = {
-        'HD': {
-            'width': 720,
-            'height': 1280
-        },
-        'FHD': {
-            'width': 1080,
-            'height': 1920
-        },
-        'SD': {
-            'width': 480,
+        '720': {
+            'width': 1280,
             'height': 720
         },
-        '2K': {
-            'width': 1440,
-            'height': 2560
+        '1080': {
+            'width': 1920,
+            'height': 1080,
         },
-        '4K': {
-            'width': 2160,
-            'height': 3840
+        '480': {
+            'width': 720,
+            'height': 480,
+        },
+        '1440': {
+            'width': 2560,
+            'height': 1440,
+        },
+        '2160': {
+            'width': 3840,
+            'height': 2160,
         }
     }
 
@@ -117,21 +117,37 @@ class ConvertVideo:
         except Exception as e:
             print(f'Unknown error. {e}')
 
-    def _convert_to_mp4(self, input_format, output_file_name):
+    def _convert_to_mp4(self, input_format, output_file_name, resolution: dict = None):
 
         try:
-            if input_format in ['avi', 'webm']:
+            if input_format in ['avi', 'webm', 'mpeg']:
                 # moviepy convert
                 clip = moviepy.VideoFileClip(str(self.origin_video))
-                clip.write_videofile(output_file_name+'.mp4')
+
+                if resolution is not None:
+                    new_file_path = output_file_name + f'_{resolution["width"]}x{resolution["height"]}' + '.mp4'
+                    resize_clip = clip.resize(height=int(resolution['height']))
+                    resize_clip.write_videofile(new_file_path)
+
+                    return {'video_path': new_file_path,
+                            'status': 'success'}
+                else:
+                    clip.write_videofile(output_file_name + '.mp4')
+
+                    return {'video_path': output_file_name + '.mp4',
+                            'status': 'success'}
             else:
                 # ffmpeg convert
                 streem = ffmpeg.input(self.origin_video)
                 streem = ffmpeg.output(streem, f'{output_file_name}.mp4')
                 ffmpeg.run(streem)
+                return {'video_path': output_file_name + '.mp4',
+                        'status': 'success'}
 
         except Exception as e:
             print(e)
+            return {'video_path': '',
+                    'status': 'error'}
 
     def _convert_to_avi(self, input_format, output_file_name):
         ...
@@ -181,27 +197,52 @@ class ConvertVideo:
                 }
 
     def check_resolution(self):
-        return self.__subprocess(f"ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of "
-                                 f"default=nw=1:nk=1 {str(self.origin_video)}").split("\n")
+        default_resolution = None
+        current_resolution = self.__subprocess(
+            f"ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of "
+            f"default=nw=1:nk=1 {str(self.origin_video)}").split("\n")
 
-    def convert_route(self, format_: str, output_file_name):
+        if current_resolution[1] in self._resolution_format:
+            default_resolution = self._resolution_format[current_resolution[1]]
+        else:
+            for title, data in self._resolution_format.items():
+                if int(data['width']) == int(current_resolution[0]):
+                    default_resolution = self._resolution_format[title]
+
+        return default_resolution
+
+    def convert_route(self, format_: str, output_file_name, resolution: dict = None):
         if self.convert_to != format_:
+
             match self.convert_to:
                 case 'mp4':
-                    return self._convert_to_mp4(input_format=format_, output_file_name=output_file_name)
+                    if resolution is not None:
+                        return self._convert_to_mp4(input_format=format_,
+                                                    output_file_name=output_file_name,
+                                                    resolution=resolution)
+                    else:
+                        return self._convert_to_mp4(input_format=format_,
+                                                    output_file_name=output_file_name)
 
     def start(self) -> list[VideoStreemData]:
         _format_data = self.check_format()
-
+        result_list = []
         if self.convert_to != _format_data['format']:
             _duration = self._get_duration_video()
-            original_resolution = self.check_resolution()
+            start_resolution = self.check_resolution()
 
-            # for i in original_resolution:
-            #     print('line: ', i)
             for resolution_title, resolution in self._resolution_format.items():
-                print(f'START RENDER OBJECT: <ID: {id(self.origin_video_object)}> --->  video title: {self.origin_video_object.title} key: {resolution_title} - value: {resolution} | duration: {_duration}')
+                if int(start_resolution['height']) >= int(resolution_title):
+                    result = self.convert_route(format_=_format_data['format'],
+                                                output_file_name=_format_data['output_file_name'],
+                                                resolution=self._resolution_format[resolution_title])
 
-            # print(self.convert_route(format_=_format_data['format'], output_file_name=_format_data['output_file_name']))
+                    result_list.append(VideoStreemData(title=self.origin_video_object.title,
+                                                       type=self.origin_video_object.type,
+                                                       origin_video=self.origin_video_object,
+                                                       resolution=resolution_title,
+                                                       duration_in_seconds=_duration['seconds'],
+                                                       video=result['video_path']))
+            return result_list
         else:
             return []

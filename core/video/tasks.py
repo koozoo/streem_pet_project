@@ -20,6 +20,17 @@ def start_render_video():
             if render_object:
                 result = render_object.start()
                 print(result)
+                if result:
+                    for item in result:
+                        add_item = VideoForStreem(
+                            title=item.title,
+                            type=item.type,
+                            resolution=item.resolution,
+                            duration_in_seconds=item.duration_in_seconds,
+                            video=item.video
+                        )
+                        add_item.origin_video = item.origin_video
+                        add_item.save()
     else:
         print('No render objects')
 

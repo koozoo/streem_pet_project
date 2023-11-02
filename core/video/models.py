@@ -33,8 +33,11 @@ class Video(models.Model):
 
 class VideoForStreem(models.Model):
     title = models.CharField(max_length=255)
-    type = models.CharField(max_length=10)
+    type = models.CharField(max_length=10, choices=TYPE, default='s')
     origin_video = models.ForeignKey(to=Video, on_delete=models.PROTECT)
-    resolution = models.CharField(max_length=3)
+    resolution = models.CharField(max_length=4)
     duration_in_seconds = models.IntegerField()
     video = models.FileField(upload_to='video/streem/%Y/%m/%d')
+
+    def __str__(self):
+        return f"Origin_id: {self.origin_video}"
