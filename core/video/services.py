@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 
 from movie.models import Movie
 from tv_shows.models import Shows, ShowsItem
-from video.models import Video
+from video.models import Video, VideoForStreem
 
 
 def ranged(
@@ -24,11 +24,11 @@ def ranged(
         end: int = None,
         block_size: int = 8124
 ) -> Generator[bytes, None, None]:
+
     consumed = 0
     file.seek(start)
     while True:
         data_length = min(block_size, end - start - consumed) if end else block_size
-
         if data_length <= 0:
             break
 
@@ -43,30 +43,30 @@ def ranged(
 
 
 def open_file(request, slug: str = None, type_video: str = 'movie', video_id: int = None):
-    if type_video == "movie":
-        objects = get_object_or_404(Movie, slug=slug)
-        _video = get_object_or_404(Video, pk=objects.video.pk)
-    else:
-        objects = get_object_or_404(ShowsItem, pk=video_id)
-        _video = get_object_or_404(Video, pk=objects.video.pk)
+    _video = get_object_or_404(VideoForStreem, pk=video_id)
 
     path = Path(_video.video.path)
-
     file = path.open('rb')
     file_size = path.stat().st_size
-
+    print("file size",file_size)
     content_length = file_size
     status_code = 200
     content_range = request.headers.get('range')
+    print("content_range",content_range)
 
     if content_range is not None:
         content_ranges = content_range.strip().lower().split('=')[-1]
+        print('content_ranges',content_ranges)
         range_start, range_end, *_ = map(str.strip, (content_ranges + '-').split('-'))
+        print("start - end", range_start, range_end)
         range_start = max(0, int(range_start)) if range_start else 0
+        print("start", range_start)
         range_end = min(file_size - 1, int(range_end)) if range_end else file_size - 1
+        print("range_end",range_end)
         file = ranged(file, start=range_start, end=range_end)
         status_code = 206
         content_range = f'bytes {range_start}-{range_end}/{file_size}'
+        print("content_range end",content_range)
 
     return file, status_code, content_length, content_range
 

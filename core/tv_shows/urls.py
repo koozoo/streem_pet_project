@@ -10,7 +10,7 @@ urlpatterns = [
             path('detail/', views.single_shows, name='detail_shows'),
             path('season-<int:season>/episode-<int:pk_series>/', include([
                 path('', views.watch_series, name='watch_series'),
-                path('watch/', video_views.get_streaming_video, name='watch_shows')
+                path('watch/<int:pk_video>', video_views.get_streaming_video, name='watch_shows')
             ]))
         ]
     ))

@@ -42,11 +42,16 @@ def watch_series(request, shows_slug, season, pk_series):
     shows_item = get_object_or_404(ShowsItem, pk=pk_series)
 
     shows_videos = VideoForStreem.objects.filter(origin_video=pk_series)
+    streem_items = {item.resolution: item.pk for item in shows_videos}
+    streem_items['default'] = streem_items['480']
 
-    context = {
-        'data': shows_info,
-        'shows_item': shows_item,
-        'streem_items': shows_videos
-    }
-    print(context)
-    return render(request, 'tv_shows/single-episode.html', context=context)
+    if shows_videos:
+        context = {
+            'data': shows_info,
+            'shows_item': shows_item,
+            'streem_items': streem_items
+        }
+        print(context)
+        return render(request, 'tv_shows/single-episode.html', context=context)
+    else:
+        return render(request, 'tv_shows/tv-shows-home.html')

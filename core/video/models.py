@@ -40,4 +40,4 @@ class VideoForStreem(models.Model):
     video = models.FileField(upload_to='video/streem/%Y/%m/%d')
 
     def __str__(self):
-        return f"Origin_id: {self.origin_video}"
+        return f"STREEM | video_id: {self.pk} | origin object: {self.origin_video} | video path: {self.video}"
