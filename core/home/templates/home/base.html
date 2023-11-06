@@ -17,6 +17,9 @@
    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
    <!--  Responsive -->
    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+   <!--  Video player style -->
+   <link href="https://unpkg.com/video.js@7.5.4/dist/video-js.css" rel="stylesheet">
+   <link href="https://unpkg.com/@silvermine/videojs-quality-selector/dist/css/quality-selector.css" rel="stylesheet">
 </head>
 
 <body>
@@ -50,9 +53,6 @@
                               </li>
                               <li class="menu-item">
                                  <a href="{% url 'shows:main_shows' %}">Сериалы</a>
-                              </li>
-                              <li class="menu-item">
-                                 <a href="#">Фильтр</a>
                               </li>
                            </ul>
                         </div>
@@ -148,6 +148,7 @@
 
    <script src="{% static 'js/script.js' %}"></script>
 
+   {% block player %} {% endblock %}
 
 </body>
 
