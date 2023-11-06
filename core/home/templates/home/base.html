@@ -18,7 +18,8 @@
    <!--  Responsive -->
    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
    <!--  Video player style -->
-   <link href="https://vjs.zencdn.net/8.6.0/video-js.css" rel="stylesheet" />
+   <link href="https://unpkg.com/video.js@7.5.4/dist/video-js.css" rel="stylesheet">
+   <link href="https://unpkg.com/@silvermine/videojs-quality-selector/dist/css/quality-selector.css" rel="stylesheet">
 </head>
 
 <body>
@@ -147,7 +148,7 @@
 
    <script src="{% static 'js/script.js' %}"></script>
 
-   <script src="https://vjs.zencdn.net/8.6.0/video.min.js"></script>
+   {% block player %} {% endblock %}
 
 </body>
 

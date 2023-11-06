@@ -12,25 +12,28 @@
                             <div class="col-lg-12">
                                 <div class="gen-video-holder">
                                     <div class="wp-custom-video">
-                                        <video
-                                            id="my-video"
-                                            class="video-js"
-                                            controls
-                                            autoplay="muted"
-                                            poster="{% get_media_prefix %}{{ data.images }}"
-                                            data-setup="{}"
-                                          >
 
-                                            <source src="{% url 'shows:watch_shows' data.slug shows_item.season shows_item.pk streem_items.default %}" type="video/mp4" />
+                                        {% include 'video/video-player.html' with video=data item=shows_item streem=streem_items %}
 
-                                            <p class="vjs-no-js">
-                                              To view this video please enable JavaScript, and consider upgrading to a
-                                              web browser that
-                                              <a href="https://videojs.com/html5-video-support/" target="_blank"
-                                                >supports HTML5 video</a
-                                              >
-                                            </p>
-                                        </video>
+<!--                                        <video-->
+<!--                                            id="my-video"-->
+<!--                                            class="video-js"-->
+<!--                                            controls-->
+<!--                                            autoplay="muted"-->
+<!--                                            poster="{% get_media_prefix %}{{ data.images }}"-->
+<!--                                            data-setup="{}"-->
+<!--                                          >-->
+
+<!--                                            <source src="{% url 'shows:watch_shows' data.slug shows_item.season shows_item.pk streem_items.default %}" type="video/mp4" />-->
+
+<!--                                            <p class="vjs-no-js">-->
+<!--                                              To view this video please enable JavaScript, and consider upgrading to a-->
+<!--                                              web browser that-->
+<!--                                              <a href="https://videojs.com/html5-video-support/" target="_blank"-->
+<!--                                                >supports HTML5 video</a-->
+<!--                                              >-->
+<!--                                            </p>-->
+<!--                                        </video>-->
                                     </div>
                                 </div>
                             </div>

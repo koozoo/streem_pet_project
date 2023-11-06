@@ -18,59 +18,6 @@ from tv_shows.models import Shows, ShowsItem
 from video.models import Video, VideoForStreem
 
 
-def ranged(
-        file: IO[bytes],
-        start: int = 0,
-        end: int = None,
-        block_size: int = 8124
-) -> Generator[bytes, None, None]:
-
-    consumed = 0
-    file.seek(start)
-    while True:
-        data_length = min(block_size, end - start - consumed) if end else block_size
-        if data_length <= 0:
-            break
-
-        data = file.read(data_length)
-        if not data:
-            break
-        consumed += data_length
-        yield data
-
-    if hasattr(file, 'close'):
-        file.close()
-
-
-def open_file(request, slug: str = None, type_video: str = 'movie', video_id: int = None):
-    _video = get_object_or_404(VideoForStreem, pk=video_id)
-
-    path = Path(_video.video.path)
-    file = path.open('rb')
-    file_size = path.stat().st_size
-    print("file size",file_size)
-    content_length = file_size
-    status_code = 200
-    content_range = request.headers.get('range')
-    print("content_range",content_range)
-
-    if content_range is not None:
-        content_ranges = content_range.strip().lower().split('=')[-1]
-        print('content_ranges',content_ranges)
-        range_start, range_end, *_ = map(str.strip, (content_ranges + '-').split('-'))
-        print("start - end", range_start, range_end)
-        range_start = max(0, int(range_start)) if range_start else 0
-        print("start", range_start)
-        range_end = min(file_size - 1, int(range_end)) if range_end else file_size - 1
-        print("range_end",range_end)
-        file = ranged(file, start=range_start, end=range_end)
-        status_code = 206
-        content_range = f'bytes {range_start}-{range_end}/{file_size}'
-        print("content_range end",content_range)
-
-    return file, status_code, content_length, content_range
-
-
 @dataclasses.dataclass
 class VideoStreemData:
     title: str
@@ -182,6 +129,36 @@ class ConvertVideo:
         }
 
         return result
+
+    def _create_new_folder(self):
+        ...
+
+    def _create_hls(self):
+
+        command = f"""
+            ffmpeg -i {self.origin_video} \
+            -filter_complex \
+            "[0:v]fps=fps=30,split=3[v1][v2][v3]; \
+            [v1]scale=width=-2:height=1080[1080p]; [v2]scale=width=-2:height=720[720p]; [v3]scale=width=-2:height=360[360p]" \
+            -codec:v libx264 -crf:v 23 -profile:v high -pix_fmt:v yuv420p -rc-lookahead:v 60 -force_key_frames:v expr:'gte(t,n_forced*2.000)' -preset:v "medium" -b-pyramid:v "strict" \
+            -map [1080p] -minrate:v:0 1600000 -maxrate:v:0 2000000 -bufsize:v:0 2*2000000 \
+            -map [720p] -minrate:v:1 900000 -maxrate:v:1 1200000 -bufsize:v:1 2*1000000 \
+            -map [360p] -minrate:v:2 500000 -maxrate:v:2 700000 -bufsize:v:2 2*500000 \
+            -codec:a aac -ac:a 2 \
+            -map 0:a:0 -b:a:0 192000 \
+            -map 0:a:0 -b:a:1 128000 \
+            -map 0:a:0 -b:a:2 96000 \
+            -a53cc:0 1 -a53cc:1 1 \
+            -f hls \
+            -strftime 1 \
+            -hls_flags second_level_segment_index \
+            -hls_time 6 \
+            -hls_playlist_type vod \
+            -hls_segment_type mpegts \
+            -hls_segment_filename 'test_data_%Y%m%d_%v_%%05d.ts' \
+            -master_pl_name master.m3u8 \
+            -var_stream_map "v:0,a:0,name:1080p v:1,a:1,name:720p v:2,a:2,name:360p" test_manifest_%v.m3u8
+        """
 
     def _object_update(self, type_: str):
         print(type_)
