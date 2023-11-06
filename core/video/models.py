@@ -8,13 +8,6 @@ STATUS_CHOICES = [
     ("d", "Delete"),
 ]
 
-RESOLUTION = [
-    ("HD", "720p"),
-    ("FHD", "1080p"),
-    ("SD", "480p"),
-    ("4k", "2160p"),
-]
-
 TYPE = [
     ("m", "фильм"),
     ("s", "сериал"),
@@ -37,7 +30,7 @@ class VideoForStreem(models.Model):
     origin_video = models.ForeignKey(to=Video, on_delete=models.PROTECT)
     resolution = models.CharField(max_length=4)
     duration_in_seconds = models.IntegerField()
-    video = models.FileField(upload_to='video/streem/%Y/%m/%d')
+    video = models.FileField(upload_to=str, null=True, blank=True)
 
     def __str__(self):
         return f"STREEM | video_id: {self.pk} | origin object: {self.origin_video} | video path: {self.video}"

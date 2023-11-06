@@ -6,6 +6,8 @@ from tv_shows.models import Shows, ShowsItem
 from video.services import ConvertVideo
 from video.models import Video, VideoForStreem
 
+from video.services import VideoStreemData
+
 
 def main_shows(request):
     context = {}
@@ -43,7 +45,6 @@ def watch_series(request, shows_slug, season, pk_series):
 
     shows_videos = VideoForStreem.objects.filter(origin_video=pk_series)
     streem_items = {item.resolution: item.pk for item in shows_videos}
-    streem_items['default'] = streem_items['480']
 
     if shows_videos:
         context = {
