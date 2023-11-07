@@ -2,14 +2,12 @@
 <video
     id="videoPlayer"
     class="video-js vjs-big-play-centered"
-    height="480"
-    width="720"
     poster="{% get_media_prefix %}{{ data.images }}"
     data-setup="{}">
 
-    <source src="{% get_media_prefix %}{{ video }}" type="application/x-mpegURL" label='1080p' selected="true"/>
-    <source src="{% get_media_prefix %}{{ video }}" type="application/x-mpegURL" label='720p' />
-    <source src="{% get_media_prefix %}{{ video }}" type="application/x-mpegURL" label='360p'  />
+    <source src="{% get_media_prefix %}{{ streem.1080.video }}" type="application/x-mpegURL" label='1080p' selected="true"/>
+    <source src="{% get_media_prefix %}{{ streem.720.video }}" type="application/x-mpegURL" label='720p' />
+    <source src="{% get_media_prefix %}{{ streem.360.video }}" type="application/x-mpegURL" label='360p'  />
 
 </video>
 

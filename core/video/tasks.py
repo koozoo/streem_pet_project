@@ -1,9 +1,9 @@
-import uuid
-
-from celery import shared_task
 from .services import ConvertVideo
 from celery_app import app
 from video.models import Video, VideoForStreem
+from tv_shows.models import ShowsItem
+
+from django.db.utils import DataError
 
 
 @app.task
@@ -15,39 +15,29 @@ def start_render_video():
 
         for video in all_video_to_render:
             render_object = ConvertVideo(video_path=video.video,
-                                         convert_to='mp4',
+                                         convert_to='m3u8',
                                          origin_video_object=video)
             if render_object:
                 result = render_object.start()
-                print(result)
+                print(f"result: {result}")
+
                 if result:
+                    _success = False
                     for item in result:
-                        add_item = VideoForStreem(
-                            title=item.title,
-                            type=item.type,
-                            resolution=item.resolution,
-                            duration_in_seconds=item.duration_in_seconds,
-                            video=item.video
-                        )
-                        add_item.origin_video = item.origin_video
-                        add_item.save()
+                        try:
+                            item.save()
+                            _success = True
+                        except DataError:
+                            print(type(item))
+                            print(item.__dict__)
+                            print(f"add item error -> ITEM: {item} | ERROR: {DataError}")
+                        except Exception as e:
+                            print(f"Unknown error: {e}")
+
+                    if _success:
+                        ShowsItem.objects.filter(video_id=video.pk).update(status='p')
+                        Video.objects.filter(pk=video.pk, status='p').update(status='c')
+
     else:
         print('No render objects')
 
-
-@app.task
-def add_video_for_stream(origin_video_id: int,
-                         type_: str,
-                         title: str,
-                         resolution: str,
-                         duration: int,
-                         video_path: str):
-
-    new_video = VideoForStreem(title=title,
-                               type=type_,
-                               origin_video=origin_video_id,
-                               resolution=resolution,
-                               duration_in_seconds=duration,
-                               video=video_path,
-                               status='n')
-    new_video.save()
