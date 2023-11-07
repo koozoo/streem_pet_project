@@ -17,7 +17,7 @@ TYPE = [
 class Video(models.Model):
     title = models.CharField(max_length=255)
     type = models.CharField(max_length=1, choices=TYPE, default='m')
-    video = models.FileField(upload_to='video/origin/%Y/%m/%d')
+    video = models.FileField(upload_to='video/origin/%Y/%m/%d', max_length=255)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='n', verbose_name='Статус')
 
     def __str__(self):
@@ -26,11 +26,11 @@ class Video(models.Model):
 
 class VideoForStreem(models.Model):
     title = models.CharField(max_length=255)
-    type = models.CharField(max_length=10, choices=TYPE, default='s')
+    type = models.CharField(max_length=100, choices=TYPE, default='s')
     origin_video = models.ForeignKey(to=Video, on_delete=models.PROTECT)
-    resolution = models.CharField(max_length=4)
+    resolution = models.CharField(max_length=10)
     duration_in_seconds = models.IntegerField()
-    video = models.FileField(upload_to=str, null=True, blank=True)
+    video = models.FileField(upload_to=str, max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"STREEM | video_id: {self.pk} | origin object: {self.origin_video} | video path: {self.video}"

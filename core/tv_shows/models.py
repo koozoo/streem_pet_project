@@ -29,9 +29,9 @@ class Shows(models.Model):
     images = models.ImageField(upload_to='shows/images/%Y/%m/%d', null=True, blank=True)
     category_id = models.ForeignKey(to=Categories, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
-    total_watch = models.DecimalField(max_digits=12, decimal_places=0, default=0)
+    total_watch = models.PositiveBigIntegerField(default=0)
     publish_social = models.BooleanField(default=False)
-    trailer_link = EmbedVideoField()
+    trailer_link = EmbedVideoField(blank=True, null=True)
     seasons = models.IntegerField(default=1)
     premier_dt = models.DateField()
     showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
@@ -43,12 +43,12 @@ class Shows(models.Model):
 
 class ShowsItem(models.Model):
     title = models.CharField(max_length=255)
-    season = models.IntegerField()
-    series = models.IntegerField()
+    season = models.PositiveIntegerField()
+    series = models.PositiveIntegerField()
     premier_dt = models.DateField()
     video = models.ForeignKey(to=Video, on_delete=models.PROTECT, related_name='origin_shows_video')
     shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT, related_name='parent_shows_item')
-    total_watch = models.IntegerField(default=0)
+    total_watch = models.PositiveBigIntegerField(default=0)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w', verbose_name='Статус')
 
     def __str__(self):

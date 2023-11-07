@@ -1,9 +1,9 @@
-import uuid
-
-from celery import shared_task
 from .services import ConvertVideo
 from celery_app import app
 from video.models import Video, VideoForStreem
+from tv_shows.models import ShowsItem
+
+from django.db.utils import DataError
 
 
 @app.task
@@ -22,9 +22,22 @@ def start_render_video():
                 print(f"result: {result}")
 
                 if result:
+                    _success = False
                     for item in result:
-                        add_item = item
-                        add_item.save()
+                        try:
+                            item.save()
+                            _success = True
+                        except DataError:
+                            print(type(item))
+                            print(item.__dict__)
+                            print(f"add item error -> ITEM: {item} | ERROR: {DataError}")
+                        except Exception as e:
+                            print(f"Unknown error: {e}")
+
+                    if _success:
+                        ShowsItem.objects.filter(video_id=video.pk).update(status='p')
+                        Video.objects.filter(pk=video.pk, status='p').update(status='c')
+
     else:
         print('No render objects')
 

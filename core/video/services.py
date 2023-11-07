@@ -219,7 +219,7 @@ class ConvertVideo:
                 type=self.origin_video_object.type,
                 resolution=resolution,
                 duration_in_seconds=_duration['seconds'],
-                video=f'{output_path.split("media")[1]}/file_manifest_{resolution}.m3u8',
+                video=f'{output_path.split("media")[1]}/file_manifest_{resolution}p.m3u8',
                 origin_video=self.origin_video_object
             ))
 

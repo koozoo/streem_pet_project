@@ -4892,7 +4892,7 @@ Movies Single
 }
 
 /*==========*/
-.gen-video-holder .my-video-dimensions {
+.gen-video-holder .video-js {
     width: 100% !important;
     height: 70vh !important;
     border: none;
@@ -4900,9 +4900,8 @@ Movies Single
     display: inline-block;
 }
 
-.gen-video-holder .wp-video .mejs-video,
-.gen-video-holder .wp-video-shortcode video,
-.gen-video-holder video.wp-video-shortcode {
+
+.gen-video-holder .video-js {
     width: 100% !important;
     height: 100% !important;
     border: none;
@@ -6366,3 +6365,6 @@ Icon-Box
 }
 
 /*===========================================================================================================*/
+
+
+
