@@ -3,7 +3,7 @@
       <div class="container">
          <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6">
-               <h4 class="gen-heading-title">Лучшее за все время</h4>
+               <h4 class="gen-heading-title">{{ info.view_block_title }}</h4>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-6 d-none d-md-inline-block">
                <div class="gen-movie-action">
@@ -22,8 +22,8 @@
                      data-lap_num="3" data-tab_num="2" data-mob_num="1" data-mob_sm="1" data-autoplay="false"
                      data-loop="false" data-margin="30">
 
-                     {% for item in top_10 %}
-                        {% include 'home/gen_section_item.html' with data=item %}
+                     {% for block in block_data.data_item %}
+                           {% include 'home/item.html' with data=block %}
                      {% endfor %}
 
                   </div>
