@@ -28,48 +28,7 @@
    </section>
    <!-- owl-carousel Banner End -->
 
-   <!-- owl-carousel Videos Best all time Start -->
-   <section class="gen-section-padding-2">
-      <div class="container">
-         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6">
-               <h4 class="gen-heading-title">Лучшее за все время</h4>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 d-none d-md-inline-block">
-               <div class="gen-movie-action">
-                  <div class="gen-btn-container text-right">
-                     <a href="tv-shows-pagination.html" class="gen-button gen-button-flat">
-                        <span class="text">Показать еще</span>
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="row mt-3">
-            <div class="col-12">
-               <div class="gen-style-2">
-                  <div class="owl-carousel owl-loaded owl-drag" data-dots="false" data-nav="true" data-desk_num="4"
-                     data-lap_num="3" data-tab_num="2" data-mob_num="1" data-mob_sm="1" data-autoplay="false"
-                     data-loop="false" data-margin="30">
-
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-                     {% include 'home/gen_section_item.html' %}
-
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </section>
-   <!-- owl-carousel Videos Section-1 End -->
+{% include 'home/top_10.html' with data=top_10 %}
 
 <!-- owl-carousel Videos Top 10 Start -->
    <section class="gen-section-padding-2">

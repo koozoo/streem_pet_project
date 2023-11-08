@@ -1,14 +1,17 @@
-from django.shortcuts import render, get_object_or_404
-from movie.models import Movie
+from django.views.generic import TemplateView
 from home import utils
 
 
-# Create your views here.
-def index(request):
-    # init page builder
-    home_page_builder = utils.HomePageBuilder(request=request)
+class Index(TemplateView):
+    template_name = 'home/index.html'
 
-    # get home page data
-    context = home_page_builder.build_home_page()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'home/index.html', context)
+        home_page_builder = utils.HomePageBuilder(request=self.request)
+
+        for item_name, item_value in home_page_builder.build_home_page().items():
+            print(item_name, item_value)
+            context[item_name] = item_value
+
+        return context

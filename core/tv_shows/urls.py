@@ -4,7 +4,7 @@ from video import views as video_views
 
 app_name = 'shows'
 urlpatterns = [
-    path('', views.main_shows, name='main_shows'),
+    path('', views.MainShows.as_view(), name='main_shows'),
     path('<slug:shows_slug>/', include(
         [
             path('detail/', views.single_shows, name='detail_shows'),

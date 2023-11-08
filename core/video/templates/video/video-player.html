@@ -3,7 +3,7 @@
     id="videoPlayer"
     class="video-js vjs-big-play-centered"
     poster="{% get_media_prefix %}{{ data.images }}"
-    data-setup="{}">
+    >
 
     <source src="{% get_media_prefix %}{{ streem.1080.video }}" type="application/x-mpegURL" label='1080p' selected="true"/>
     <source src="{% get_media_prefix %}{{ streem.720.video }}" type="application/x-mpegURL" label='720p' />
@@ -12,7 +12,7 @@
 </video>
 
 {% block player %}
-<script src="https://unpkg.com/video.js@7.5.4/dist/video.js"></script>
+    <script src="https://unpkg.com/video.js@7.5.4/dist/video.js"></script>
     <script src="https://cdn.sc.gl/videojs-hotkeys/0.2/videojs.hotkeys.min.js"></script>
     <script src="https://unpkg.com/@silvermine/videojs-quality-selector/dist/js/silvermine-videojs-quality-selector.min.js"></script>
     <script type="text/javascript" src="{% static 'js/player.js' %}"></script>

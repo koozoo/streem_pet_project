@@ -19,13 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 from core import settings
 from home import views as home_views
-from tv_shows import views as shows_views
-from movie import views as movie_views
-from video import views as video_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_views.index, name='home'),
+    path('', home_views.Index.as_view(), name='home'),
     path('shows/', include('tv_shows.urls', namespace='shows')),
     path('movie/', include('movie.urls', namespace='movie'))
 ]
