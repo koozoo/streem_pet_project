@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
-from home import utils
+
+from home.services import IndexBuilder
 
 
 class Index(TemplateView):
@@ -8,11 +9,9 @@ class Index(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blocks = []
-        home_page_builder = utils.HomePageBuilder(request=self.request)
 
-        for item in home_page_builder.build_home_page():
-            print(item)
-            blocks.append(item)
+        for item in IndexBuilder().create():
+            blocks.append(item.page_data)
 
         context['page_items'] = blocks
         print(context)

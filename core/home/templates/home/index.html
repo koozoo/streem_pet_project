@@ -5,7 +5,7 @@
 
    {% for item in page_items %}
 
-      {% if item.block_info.block_title  == 'main_banner' %}
+      {% if item.block_info.type  == 'banner' %}
          {% include 'home/banner.html' with block_data=item.data %}
       {% else %}
          {% include 'home/page_block_item.html' with info=item.block_info block_data=item.data %}
