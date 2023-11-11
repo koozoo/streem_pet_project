@@ -9,10 +9,13 @@ class Index(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blocks = []
+        page = IndexBuilder().create()
 
-        for item in IndexBuilder().create():
+        for item in page.blocks:
             blocks.append(item.page_data)
 
+        context['title'] = page.title
+        context['keyword'] = page.keyword
         context['page_items'] = blocks
         print(context)
         return context
