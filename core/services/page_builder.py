@@ -38,6 +38,7 @@ class PageBlock:
                         'movie': {'genre': 'anime', 'status': 'p'}
                        } -> 10 items movie
     page_title = view title on page
+    page_data = data for block on page
     """
 
     title: str
@@ -49,15 +50,6 @@ class PageBlock:
 
     def __str__(self):
         return f"title: {self.title}, type: {self.type}, priotiry: {self.priority}"
-
-
-class BlockBuilder:
-    _type: list = ['banner', 'media_block']
-
-    def __init__(self, title: str, type: str, priority: int):
-        self.title = title
-        self.type = type
-        self.priority = priority
 
 
 @dataclasses.dataclass

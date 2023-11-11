@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'showrunner.apps.ShowrunnerConfig',
     'actor.apps.ActorConfig',
     'genre.apps.GenreConfig',
-    'categories.apps.CategoriesConfig'
+    'categories.apps.CategoriesConfig',
+    'settings_page.apps.SettingsPageConfig'
 ]
 
 MIDDLEWARE = [
