@@ -37,15 +37,30 @@
                   </div>
                </div>
                <div class="gen-movie-action">
-                  <a href="{% url 'home' %}" class="gen-button">
+                  {% if data.type == 'movie' %}
+                  <a href="{% url 'movie:detail_movie' data.entity.slug %}" class="gen-button">
                      <i class="fa fa-play"></i>
                   </a>
+                  {% else %}
+                  <a href="{% url 'shows:detail_shows' data.entity.slug %}" class="gen-button">
+                     <i class="fa fa-play"></i>
+                  </a>
+                  {% endif %}
+
                </div>
             </div>
             <div class="gen-info-contain">
                <div class="gen-movie-info">
-                  <h3><a href="single-movie.html">НАЗВАНИЕ ФИЛЬМА</a>
+                  {% if data.type == 'movie' %}
+                  <h3>
+                     <a href="{% url 'movie:detail_movie' data.entity.slug %}">{{ data.title }}</a>
                   </h3>
+                  {% else %}
+                  <h3>
+                     <a href="{% url 'shows:detail_shows' data.entity.slug %}">{{ data.title }}</a>
+                  </h3>
+                  {% endif %}
+
                </div>
                <div class="gen-movie-meta-holder">
                   <ul>

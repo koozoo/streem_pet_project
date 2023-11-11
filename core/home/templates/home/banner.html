@@ -1,0 +1,26 @@
+{% load static %}
+<!-- owl-carousel Banner Start -->
+   <section class="pt-0 pb-0">
+      <div class="container-fluid px-0">
+         <div class="row no-gutters">
+            <div class="col-12">
+               <div class="gen-banner-movies banner-style-2">
+                  <div class="owl-carousel owl-loaded owl-drag" data-dots="false" data-nav="true" data-desk_num="1"
+                     data-lap_num="1" data-tab_num="1" data-mob_num="1" data-mob_sm="1" data-autoplay="true"
+                     data-loop="true" data-margin="0">
+
+                     {% for item in block_data.data_item %}
+                        {% if item.type == 'movie' %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type %}
+                        {% else %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type %}
+                        {% endif %}
+                     {% endfor %}
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- owl-carousel Banner End -->
