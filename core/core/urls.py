@@ -24,7 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_views.Index.as_view(), name='home'),
     path('shows/', include('tv_shows.urls', namespace='shows')),
-    path('movie/', include('movie.urls', namespace='movie'))
+    path('movie/', include('movie.urls', namespace='movie')),
+    path('genres/', include('genre.urls', namespace='genre')),
+    path('tags/', include('tags.urls', namespace='tags'))
 ]
 
 if settings.DEBUG is True:

@@ -45,6 +45,7 @@
                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <div id="gen-menu-contain" class="gen-menu-contain">
                            <ul id="gen-main-menu" class="navbar-nav ml-auto">
+                              {% if title == 'Главная страница' %}
                               <li class="menu-item active">
                                  <a href="{% url 'home' %}" aria-current="page">Главная</a>
                               </li>
@@ -54,6 +55,37 @@
                               <li class="menu-item">
                                  <a href="{% url 'shows:main_shows' %}">Сериалы</a>
                               </li>
+                              {% elif title == 'Фильмы'%}
+                              <li class="menu-item">
+                                 <a href="{% url 'home' %}" aria-current="page">Главная</a>
+                              </li>
+                              <li class="menu-item active">
+                                 <a href="{% url 'movie:main_movie' %}">Фильмы</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'shows:main_shows' %}">Сериалы</a>
+                              </li>
+                              {% elif title == 'Сериалы' %}
+                              <li class="menu-item">
+                                 <a href="{% url 'home' %}" aria-current="page">Главная</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'movie:main_movie' %}">Фильмы</a>
+                              </li>
+                              <li class="menu-item active">
+                                 <a href="{% url 'shows:main_shows' %}">Сериалы</a>
+                              </li>
+                              {% else %}
+                                 <li class="menu-item">
+                                 <a href="{% url 'home' %}" aria-current="page">Главная</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'movie:main_movie' %}">Фильмы</a>
+                              </li>
+                              <li class="menu-item">
+                                 <a href="{% url 'shows:main_shows' %}">Сериалы</a>
+                              </li>
+                              {% endif %}
                            </ul>
                         </div>
                      </div>

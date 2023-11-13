@@ -10,10 +10,11 @@
                      data-loop="true" data-margin="0">
 
                      {% for item in block_data.data_item %}
+                        {{ item.genre }}
                         {% if item.type == 'movie' %}
-                           {% include 'home/banner_item.html' with data=item.entity type=item.type genre=item.genre %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type genres=item.genres actors=item.actors tags_data=item.tags_data %}
                         {% else %}
-                           {% include 'home/banner_item.html' with data=item.entity type=item.type genre=item.genre %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type genres=item.genres actors=item.actors tags_data=item.tags_data %}
                         {% endif %}
                      {% endfor %}
 
