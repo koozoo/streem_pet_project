@@ -4991,6 +4991,13 @@ Movies Single
 .gen-single-tv-show-info .gen-single-meta-holder ul li a,
 .gen-single-video-info .gen-single-meta-holder ul li a {
     color: var(--white-color);
+    padding: 0px 3px 0px 3px;
+}
+
+.gen-single-movie-info .gen-single-meta-holder ul li a:hover,
+.gen-single-tv-show-info .gen-single-meta-holder ul li a:hover,
+.gen-single-video-info .gen-single-meta-holder ul li a:hover {
+    color: var(--primary-color);
 }
 
 .gen-single-movie-info .gen-single-meta-holder ul li i,
@@ -5710,6 +5717,10 @@ Banner 2
 
 .gen-movie-contain-style-2 .gen-movie-meta-holder .gen-meta-info ul li a {
     color: var(--white-color);
+}
+
+.gen-movie-contain-style-2 .gen-movie-meta-holder .gen-meta-info ul li a:hover {
+    color: var(--primary-color);
 }
 
 /* .gen-banner-movies.banner-style-2 .owl-carousel .owl-item .gen-movie-contain-style-2 .gen-movie-info, .gen-banner-movies.banner-style-2 .owl-carousel .owl-item .gen-movie-contain-style-2 .gen-movie-meta-holder, .gen-banner-movies.banner-style-2 .owl-carousel .owl-item .gen-movie-contain-style-2 .gen-movie-action, .gen-banner-movies.banner-style-2 .owl-carousel .owl-item .gen-movie-contain-style-2 .gen-tag-line, .gen-banner-movies.banner-style-2 .owl-carousel .owl-item .gen-movie-contain-style-2 .gen-tag-img {  }

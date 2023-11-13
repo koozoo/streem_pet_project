@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from tags.models import Tags
+
+
+@admin.register(Tags)
+class TagsAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slug']

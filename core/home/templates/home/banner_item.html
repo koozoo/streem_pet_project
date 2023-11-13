@@ -58,18 +58,12 @@
                                              </li>
                                              <li>
                                                 <strong>Genre :</strong>
-                                                <span>
-                                                   <a href="{% url 'home' %}">
-                                                      Action, </a>
-                                                </span>
-                                                <span>
-                                                   <a href="{% url 'home' %}">
-                                                      Annimation, </a>
-                                                </span>
-                                                <span>
-                                                   <a href="#">
-                                                      Family </a>
-                                                </span>
+                                                {% for item in genre %}
+                                                   <span>
+                                                      <a href="{% url 'home' %}">
+                                                         {{item.title.capitalize}} </a>
+                                                   </span>
+                                                {% endfor %}
                                              </li>
                                              <li>
                                                 <strong>Tag :</strong>

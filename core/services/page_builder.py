@@ -11,6 +11,9 @@ class PageBlockData:
     type: str
     more_video_link: tuple
     videos: list
+    genre: list[dict]
+    tags: list[dict]
+    showrunner: dict
     entity: Movie | Shows
 
 
@@ -21,7 +24,7 @@ class PageBlock:
     ! all blocks have a display limit of 10 element
 
     title: system title block
-    type: banner or media_block
+    type: banner | media_block | detail | single_shows | single_movie
     priority: The higher the priority, the higher the block is displayed on the site.
     data_filter: {'shows': {'params': {'value'} | None,
                   'movie': {'params': 'value'} | None,}
@@ -36,8 +39,9 @@ class PageBlock:
 
                        {'shows': None,
                         'movie': {'genre': 'anime', 'status': 'p'}
-                       } -> 10 items movie
+                       } -> 10 items movie with genre anime
     page_title = view title on page
+    page_data = data for block on page
     """
 
     title: str
@@ -51,15 +55,6 @@ class PageBlock:
         return f"title: {self.title}, type: {self.type}, priotiry: {self.priority}"
 
 
-class BlockBuilder:
-    _type: list = ['banner', 'media_block']
-
-    def __init__(self, title: str, type: str, priority: int):
-        self.title = title
-        self.type = type
-        self.priority = priority
-
-
 @dataclasses.dataclass
 class Page:
     title: str
@@ -70,8 +65,17 @@ class Page:
 
 
 class PageBuilder:
+    """
+
+    _blocks: list blocks for render page
+    _page_title: page title
+
+    """
     _blocks: dict
     _page_title: str
+
+    def __init__(self, page_title=None):
+        self._page_title = page_title
 
     def _add_block(self, title, type_, priority, data_filter, page_title):
         self._blocks[title] = PageBlock(
@@ -111,11 +115,16 @@ class PageBuilder:
                     type_ = 'shows'
                     more_video_link = 'shows:detail_shows', item.slug
                     videos = ShowsItem.objects.filter(shows_id=item.pk)
-
+                    genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
+                    tags = [{} for i in item.tags.all()]
+                    showrunner = item.showrunner
                 elif isinstance(item, Movie):
                     type_ = 'movie'
                     more_video_link = 'movie:detail_shows', item.slug
                     videos = item.video
+                    genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
+                    tags = [{} for i in item.tags.all()]
+                    showrunner = item.showrunner
 
                 else:
                     print(f'Unknowns entity: {item}')
@@ -125,8 +134,11 @@ class PageBuilder:
                     title=item.title,
                     type=type_,
                     more_video_link=more_video_link,
+                    genre=genre,
                     videos=videos,
-                    entity=item
+                    entity=item,
+                    showrunner=showrunner,
+                    tags=tags
                 ))
         return result
 
@@ -149,9 +161,3 @@ class PageBuilder:
             page_block_data.append(self._blocks[title])
 
         return page_block_data
-
-    def set_page_title(self, title):
-        self._page_title = title
-
-    def get_page_title(self):
-        return self._page_title

@@ -66,7 +66,9 @@
                   <ul>
                      <li>{{ data.entity.total_watch }} Views</li>
                      <li>
-                        <a href="action.html"><span>Action</span></a>
+                        {% for item in data.genre %}
+                           <a href="#"><span>{{ item.title.capitalize }}</span></a>
+                        {% endfor %}
                      </li>
                   </ul>
                </div>
