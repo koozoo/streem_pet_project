@@ -1,10 +1,12 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.urls import reverse
 from embed_video.fields import EmbedVideoField
 
 from actor.models import Actors
 from categories.models import Categories
 from genre.models import Genre
+from tags.models import Tags
 from showrunner.models import Showrunner
 
 from video.models import Video
@@ -36,6 +38,8 @@ class Shows(models.Model):
     premier_dt = models.DateField()
     showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
     genre = models.ManyToManyField(to=Genre)
+    tags = models.ManyToManyField(to=Tags)
+    actors = models.ManyToManyField(to=Actors, blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} | ID:{self.pk}"
@@ -50,6 +54,9 @@ class ShowsItem(models.Model):
     shows_id = models.ForeignKey(to=Shows, on_delete=models.PROTECT, related_name='parent_shows_item')
     total_watch = models.PositiveBigIntegerField(default=0)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w', verbose_name='Статус')
+
+    def get_absolute_url(self):
+        return reverse('shows', kwargs={'movie_slug': self.slug})
 
     def __str__(self):
         return f"Shows: {self.shows_id} | ID: {self.pk} | {self.title} | season: {self.season} | series {self.series}"

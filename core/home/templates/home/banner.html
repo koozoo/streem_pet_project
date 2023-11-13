@@ -11,9 +11,9 @@
 
                      {% for item in block_data.data_item %}
                         {% if item.type == 'movie' %}
-                           {% include 'home/banner_item.html' with data=item.entity type=item.type %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type genre=item.genre %}
                         {% else %}
-                           {% include 'home/banner_item.html' with data=item.entity type=item.type %}
+                           {% include 'home/banner_item.html' with data=item.entity type=item.type genre=item.genre %}
                         {% endif %}
                      {% endfor %}
 

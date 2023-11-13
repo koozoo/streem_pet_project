@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'actor.apps.ActorConfig',
     'genre.apps.GenreConfig',
     'categories.apps.CategoriesConfig',
-    'settings_page.apps.SettingsPageConfig'
+    'settings_page.apps.SettingsPageConfig',
+    'tags.apps.TagsConfig'
 ]
 
 MIDDLEWARE = [

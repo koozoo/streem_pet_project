@@ -39,10 +39,7 @@ def single_shows(request, shows_slug: str):
     # DATA BLOCK
     data = get_object_or_404(Shows.objects.filter(status='p', slug=shows_slug))
     videos = ShowsItem.objects.filter(shows_id=data.pk, status='p')
-    print(data.genre)
-    # genre = ', '.join(Genre.objects.filter(shows_id=data.pk, status='p')).rstrip(',')
-    # print(genre)
-
+    print(data)
     # SERVICE BLOCK
     seasons = {}
     total_video = 0
@@ -59,7 +56,9 @@ def single_shows(request, shows_slug: str):
         'data': data,
         'video_seasons': seasons,
         'total_video': total_video,
-        'total_seasons': [i + 1 for i in range(data.seasons)]
+        'total_seasons': [i + 1 for i in range(data.seasons)],
+        'genre': [{"pk": genre.pk, "title": genre.title.capitalize(), "slug": genre.slug} for genre in data.genre.all()]
+
     }
 
     return render(request, 'tv_shows/single-tv-shows.html', context=context)

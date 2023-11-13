@@ -42,7 +42,9 @@
                                                 </li>
                                                 <li>{{ data.premier_dt }}</li>
                                                 <li>
-                                                    <a href="#"><span>Action </span></a>
+                                                    {% for item in genre %}
+                                                        <a href="#"><span>{{ item.title }}</span></a>
+                                                    {% endfor %}
                                                 </li>
                                                 <li>
                                                     <i class="fas fa-eye">

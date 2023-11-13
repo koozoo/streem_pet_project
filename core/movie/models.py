@@ -8,6 +8,7 @@ from actor.models import Actors
 from genre.models import Genre
 from showrunner.models import Showrunner
 from video.models import Video
+from tags.models import Tags
 
 STATUS_CHOICES = [
     ("d", "Draft"),
@@ -23,14 +24,15 @@ class Movie(models.Model):
     description = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to='movie_images/%Y/%m/%d', null=True, blank=True)
     video = models.ForeignKey(to=Video, on_delete=models.PROTECT, related_name='origin_movie_video')
-    actors = models.TextField(blank=True, null=True) # TODO many-to-many
+    actors = models.ManyToManyField(to=Actors, blank=True, null=True)
     category_id = models.ForeignKey(to=Categories, on_delete=models.PROTECT, related_name='category')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='Статус')
     total_watch = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     publish_social = models.BooleanField(default=False)
     trailer_link = EmbedVideoField(null=True, blank=True)
-    showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT)
+    showrunner = models.ForeignKey(to=Showrunner, on_delete=models.PROTECT, blank=True, null=True)
     genre = models.ManyToManyField(to=Genre)
+    tags = models.ManyToManyField(to=Tags)
 
     def get_absolute_url(self):
         return reverse('movie', kwargs={'movie_slug': self.slug})

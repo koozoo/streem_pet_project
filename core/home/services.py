@@ -7,8 +7,8 @@ from tv_shows.models import Shows, ShowsItem
 
 class IndexBuilder(PageBuilder):
 
-    def __init__(self):
-        super()
+    def __init__(self, page_title):
+        super().__init__(page_title)
 
     def _main_banner(self):
         title = 'main_banner'
@@ -93,11 +93,10 @@ class IndexBuilder(PageBuilder):
 
     def create(self) -> Page:
         self._init_blocks()
-        self.set_page_title(title='Главная страница')
 
         page_data = self._create_page()
 
         return Page(
-            title=self.get_page_title(),
+            title=self._page_title,
             blocks=page_data
         )
