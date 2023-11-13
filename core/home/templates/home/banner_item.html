@@ -46,7 +46,12 @@
                                           <ul class="gen-meta-after-excerpt">
                                              <li>
                                                 <strong>Cast :</strong>
-                                                {{ data.actors }}
+                                                {% for actor in actors %}
+                                                   <span>
+                                                      <a href="#">
+                                                         {{actor.name}}, </a>
+                                                   </span>
+                                                {% endfor %}
                                              </li>
                                              <li>
                                                 <strong>Category :</strong>
@@ -58,31 +63,21 @@
                                              </li>
                                              <li>
                                                 <strong>Genre :</strong>
-                                                {% for item in genre %}
+                                                {% for item in genres %}
                                                    <span>
-                                                      <a href="{% url 'home' %}">
+                                                      <a href="{% url 'genre:main_genre' item.slug %}">
                                                          {{item.title.capitalize}} </a>
                                                    </span>
                                                 {% endfor %}
                                              </li>
                                              <li>
                                                 <strong>Tag :</strong>
-                                                <span>
-                                                   <a href="#">
-                                                      4K Ultra, </a>
-                                                </span>
-                                                <span>
-                                                   <a href="#">
-                                                      Brother, </a>
-                                                </span>
-                                                <span>
-                                                   <a href="#">
-                                                      Dubbing, </a>
-                                                </span>
-                                                <span>
-                                                   <a href="#">
-                                                      Premieres </a>
-                                                </span>
+                                                {% for tag in tags_data %}
+                                                   <span>
+                                                      <a href="{% url 'tags:main_tags' tag.slug %}">
+                                                         {{tag.title}} </a>
+                                                   </span>
+                                                {% endfor %}
                                              </li>
                                           </ul>
                                        </div>

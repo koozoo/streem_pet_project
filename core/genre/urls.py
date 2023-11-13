@@ -1,8 +1,8 @@
 from django.urls import path, include
-from tv_shows import views
-from video import views as video_views
+from genre import views
 
-app_name = 'shows'
+
+app_name = 'genre'
 urlpatterns = [
-    path('', views.MainShows.as_view(), name='main_genre'),
+    path('<slug:genre_slug>/', views.MainGenre.as_view(), name='main_genre'),
 ]

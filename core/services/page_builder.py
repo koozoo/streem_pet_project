@@ -11,9 +11,10 @@ class PageBlockData:
     type: str
     more_video_link: tuple
     videos: list
-    genre: list[dict]
-    tags: list[dict]
+    genres: list[dict]
+    tags_data: list[dict]
     showrunner: dict
+    actors: list[dict]
     entity: Movie | Shows
 
 
@@ -116,14 +117,16 @@ class PageBuilder:
                     more_video_link = 'shows:detail_shows', item.slug
                     videos = ShowsItem.objects.filter(shows_id=item.pk)
                     genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
-                    tags = [{} for i in item.tags.all()]
+                    tags = [{"slug": i.slug, "title": i.title} for i in item.tags.all()]
+                    actors = [{"slug": i.slug, "name": i.name} for i in item.actors.all()]
                     showrunner = item.showrunner
                 elif isinstance(item, Movie):
                     type_ = 'movie'
                     more_video_link = 'movie:detail_shows', item.slug
                     videos = item.video
                     genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
-                    tags = [{} for i in item.tags.all()]
+                    tags = [{"slug": i.slug, "title": i.title} for i in item.tags.all()]
+                    actors = [{"slug": i.slug, "name": i.name} for i in item.actors.all()]
                     showrunner = item.showrunner
 
                 else:
@@ -134,11 +137,12 @@ class PageBuilder:
                     title=item.title,
                     type=type_,
                     more_video_link=more_video_link,
-                    genre=genre,
+                    genres=genre,
                     videos=videos,
                     entity=item,
                     showrunner=showrunner,
-                    tags=tags
+                    tags_data=tags,
+                    actors=actors
                 ))
         return result
 

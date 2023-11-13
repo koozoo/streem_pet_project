@@ -5,7 +5,9 @@ from pathlib import Path
 
 # Create your views here.
 def main_movie(request):
-    context = {}
+    context = {
+        'title': 'Фильмы',
+    }
     return render(request, 'movie/movies-home.html', context)
 
 
@@ -15,6 +17,7 @@ def single_movie(request, movie_slug):
 
     context = {
         'data': data,
+        'title': 'Фильмы',
         'media_type': 'movie',
         'duration_video': 0
     }
