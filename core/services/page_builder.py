@@ -25,7 +25,7 @@ class PageBlock:
     ! all blocks have a display limit of 10 element
 
     title: system title block
-    type: banner | media_block | detail | single_shows | single_movie
+    type: banner | media_block
     priority: The higher the priority, the higher the block is displayed on the site.
     data_filter: {'shows': {'params': {'value'} | None,
                   'movie': {'params': 'value'} | None,}
@@ -41,8 +41,9 @@ class PageBlock:
                        {'shows': None,
                         'movie': {'genre': 'anime', 'status': 'p'}
                        } -> 10 items movie with genre anime
-    page_title = view title on page
-    page_data = data for block on page
+    page_title: view title on page
+    page_data: data for block on page
+    component_name: view template data
     """
 
     title: str
@@ -51,6 +52,7 @@ class PageBlock:
     data_filter: dict
     page_title: str | None = None
     page_data: dict = None
+    component_name: str = None
 
     def __str__(self):
         return f"title: {self.title}, type: {self.type}, priotiry: {self.priority}"
@@ -90,13 +92,18 @@ class PageBuilder:
     def _compose_data(self, params: dict):
 
         data = []
+        limit = 5
+
+        if params['movie'] is None or params['shows'] is None:
+            limit = 10
 
         for k, fiter_params in params.items():
+
             if fiter_params is not None:
                 if k == 'movie':
-                    data.append(self._get_movies(**fiter_params))
+                    data.append(self._get_movies(limit=limit, **fiter_params))
                 else:
-                    data.append(self._get_shows(**fiter_params))
+                    data.append(self._get_shows(limit=limit, **fiter_params))
 
         if data:
             return data

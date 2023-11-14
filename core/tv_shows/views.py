@@ -2,19 +2,20 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 from django.db.models import F
 
+from home.utils import DataMixin
 from tv_shows.models import Shows, ShowsItem
+from tv_shows.utils import ShowsBuilder
 from video.models import Video, VideoForStreem
 from genre.models import Genre
 
 
-class MainShows(TemplateView):
+class MainShows(DataMixin, TemplateView):
     template_name = 'tv_shows/tv-shows-home.html'
+    title = 'Сериалы'
+    dispatch_ = ShowsBuilder
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['title'] = "Сериалы"
-
         return context
 
 
@@ -30,8 +31,6 @@ class DetailShows(TemplateView):
         self._update_counter(slug=kwargs['shows_slug'])
         data, video = self._get_data_page(slug=kwargs['shows_slug'])
         self._videos(videos=video)
-
-        print(self.seasons)
 
         context['title'] = "Сериалы",
         context['data'] = data,
@@ -75,7 +74,7 @@ def single_shows(request, shows_slug: str):
     # DATA BLOCK
     data = get_object_or_404(Shows.objects.filter(status='p', slug=shows_slug))
     videos = ShowsItem.objects.filter(shows_id=data.pk, status='p')
-    print(data)
+
     # SERVICE BLOCK
     seasons = {}
     total_video = 0
@@ -97,7 +96,7 @@ def single_shows(request, shows_slug: str):
         'genre': [{"pk": genre.pk, "title": genre.title.capitalize(), "slug": genre.slug} for genre in data.genre.all()]
 
     }
-
+    print(context)
     return render(request, 'tv_shows/single-tv-shows.html', context=context)
 
 
@@ -112,9 +111,10 @@ def watch_series(request, shows_slug, season, pk_series):
         context = {
             'data': shows_info,
             'shows_item': shows_item,
-            'streem_items': streem_items
+            'streem_items': streem_items,
+            'title': 'Сериалы'
         }
-
+        print(context)
         return render(request, 'tv_shows/single-episode.html', context=context)
     else:
         return render(request, 'tv_shows/tv-shows-home.html')
