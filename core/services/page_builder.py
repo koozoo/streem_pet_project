@@ -77,8 +77,9 @@ class PageBuilder:
     _blocks: dict
     _page_title: str
 
-    def __init__(self, page_title=None):
+    def __init__(self, page_title=None, params=None):
         self._page_title = page_title
+        self._params = params
 
     def _add_block(self, title, type_, priority, data_filter, page_title):
         self._blocks[title] = PageBlock(
@@ -89,10 +90,9 @@ class PageBuilder:
             page_title=page_title
         )
 
-    def _compose_data(self, params: dict):
+    def _compose_data(self, params: dict, limit: int):
 
         data = []
-        limit = 5
 
         if params['movie'] is None or params['shows'] is None:
             limit = 10
@@ -101,7 +101,10 @@ class PageBuilder:
 
             if fiter_params is not None:
                 if k == 'movie':
-                    data.append(self._get_movies(limit=limit, **fiter_params))
+                    if self._params is not None:
+                        data.append(self._get_movies(limit=limit, **fiter_params))
+                    else:
+                        data.append(self._get_movies(limit=limit, **fiter_params))
                 else:
                     data.append(self._get_shows(limit=limit, **fiter_params))
 
@@ -153,10 +156,10 @@ class PageBuilder:
                 ))
         return result
 
-    def _create_page(self):
+    def _create_page(self, limit=5):
         page_block_data = []
         for title, value in self._blocks.items():
-            block_data = self._compose_data(params=value.data_filter)
+            block_data = self._compose_data(params=value.data_filter, limit=limit)
 
             info = {
                 'view_block_title': value.page_title,
