@@ -4,5 +4,5 @@ from genre import views
 
 app_name = 'genre'
 urlpatterns = [
-    path('<slug:genre_slug>/', views.MainGenre.as_view(), name='main_genre'),
+    path('<slug:genre_slug>/', views.listing, name='main_genre'),
 ]

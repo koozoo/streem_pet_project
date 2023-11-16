@@ -6,45 +6,17 @@
       <div class="gen-carousel-movies-style-2 movie-grid style-2">
          <div class="gen-movie-contain">
             <div class="gen-movie-img">
-               <img src="{% get_media_prefix %}{{ data.entity.images }}" alt="owl-carousel-video-image">
-               <div class="gen-movie-add">
-                  <div class="wpulike wpulike-heart">
-                     <div class="wp_ulike_general_class wp_ulike_is_not_liked"><button
-                           type="button" class="wp_ulike_btn wp_ulike_put_image"></button></div>
-                  </div>
-                  <ul class="menu bottomRight">
-                     <li class="share top">
-                        <i class="fa fa-share-alt"></i>
-                        <ul class="submenu">
-                           <li><a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
-                           </li>
-                           <li><a href="#" class="facebook"><i class="fab fa-instagram"></i></a>
-                           </li>
-                           <li><a href="#" class="facebook"><i class="fab fa-twitter"></i></a></li>
-                        </ul>
-                     </li>
-                  </ul>
-                  <div class="movie-actions--link_add-to-playlist dropdown">
-                     <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i
-                           class="fa fa-plus"></i></a>
-                     <div class="dropdown-menu mCustomScrollbar">
-                        <div class="mCustomScrollBox">
-                           <div class="mCSB_container">
-                              <a class="login-link" href="register.html">Что бы добавить в свой плейлись авторизуйтесь</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+               <img src="{% get_media_prefix %}{{ data.entity.images }}" alt="">
                <div class="gen-movie-action">
+
                   {% if data.type == 'movie' %}
-                  <a href="{% url 'movie:detail_movie' data.entity.slug %}" class="gen-button">
-                     <i class="fa fa-play"></i>
-                  </a>
+                     <a href="{% url 'movie:detail_movie' data.entity.slug %}" class="gen-button">
+                        <i class="fa fa-play"></i>
+                     </a>
                   {% else %}
-                  <a href="{% url 'shows:detail_shows' data.entity.slug %}" class="gen-button">
-                     <i class="fa fa-play"></i>
-                  </a>
+                     <a href="{% url 'shows:detail_shows' data.entity.slug %}" class="gen-button">
+                        <i class="fa fa-play"></i>
+                     </a>
                   {% endif %}
 
                </div>
@@ -66,8 +38,8 @@
                   <ul>
                      <li>{{ data.entity.total_watch }} Views</li>
                      <li>
-                        {% for item in data.genre %}
-                           <a href="#"><span>{{ item.title.capitalize }}</span></a>
+                        {% for item in data.genres %}
+                           <a href="{% url 'genre:main_genre' item.slug %}"><span>{{ item.title.capitalize }}</span></a>
                         {% endfor %}
                      </li>
                   </ul>

@@ -25,6 +25,8 @@ class DataMixin:
     dispatch_ = None
     extra_context = {}
     blocks: list = None
+    genre: str = None
+    tags: str = None
 
     def __init__(self):
         if self.title:
@@ -36,8 +38,17 @@ class DataMixin:
         if self.page_items:
             self.extra_context['page_items'] = self.page_items
         else:
-            self._get_page_data(page_builder_callback=self.dispatch_)
-            self.extra_context['page_items'] = self.blocks
+            if self.tags:
+                ...
+
+            if self.genre:
+                ...
+
+            try:
+                self._get_page_data(page_builder_callback=self.dispatch_)
+                self.extra_context['page_items'] = self.blocks
+            except TypeError:
+                print(TypeError)
 
     def get_mixin_context(self):
         return self.extra_context
@@ -45,10 +56,15 @@ class DataMixin:
     def _get_config(self, config_name: str):
         ...
 
-    def _get_page_data(self, page_builder_callback):
+    def _get_page_data(self, page_builder_callback, genre: str = None, tags: str = None):
         self.blocks = []
 
-        page = page_builder_callback(page_title=self.title).create()
+        if genre is not None:
+            page = page_builder_callback(page_title=self.title, params=self.genre).create()
+        elif tags is not None:
+            page = page_builder_callback(page_title=self.title, params=self.tags).create()
+        else:
+            page = page_builder_callback(page_title=self.title).create()
 
         for item in page.blocks:
             self.blocks.append(item.page_data)
@@ -56,8 +72,8 @@ class DataMixin:
 
 class IndexBuilder(PageBuilder):
 
-    def __init__(self, page_title):
-        super().__init__(page_title)
+    def __init__(self, page_title, params=None):
+        super().__init__(page_title, params)
 
     def _main_banner(self):
         title = 'main_banner'
