@@ -2,14 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 from django.db.models import F
 
-from home.utils import DataMixin
+from home.utils import MainPagesMixin
 from tv_shows.models import Shows, ShowsItem
 from tv_shows.utils import ShowsBuilder
-from video.models import Video, VideoForStreem
-from genre.models import Genre
+from video.models import VideoForStreem
 
 
-class MainShows(DataMixin, TemplateView):
+class MainShows(MainPagesMixin, TemplateView):
     template_name = 'tv_shows/tv-shows-home.html'
     title = 'Сериалы'
     dispatch_ = ShowsBuilder

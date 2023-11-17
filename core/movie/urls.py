@@ -8,7 +8,7 @@ urlpatterns = [
     path('<slug:movie_slug>/', include(
         [
             path('watch/', video_views.get_streaming_video, name='watch_movie'),
-            path('detail/', views.single_movie, name='detail_movie')
+            path('detail/', views.DetailMovie.as_view(), name='detail_movie')
         ]
     ))
 ]

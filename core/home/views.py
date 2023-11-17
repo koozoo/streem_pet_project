@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView
-from home.utils import DataMixin, IndexBuilder
+from home.utils import MainPagesMixin, IndexBuilder
 
 
-class Index(DataMixin, TemplateView):
+class Index(MainPagesMixin, TemplateView):
     template_name = 'home/index.html'
     title = 'Главная страница'
     dispatch_ = IndexBuilder

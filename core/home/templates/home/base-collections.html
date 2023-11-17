@@ -75,23 +75,31 @@
                                             </div>
                                         </div>
                                         <div class="gen-movie-action">
-                                            <a href="single-movie.html" class="gen-button">
-                                                <i class="fa fa-play"></i>
-                                            </a>
+                                            {% if item.entity.category_id.title == 'movie' %}
+                                                <a href="{% url 'movie:detail_movie' item.entity.slug %}" class="gen-button">
+                                                    <i class="fa fa-play"></i>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'shows:detail_shows' item.entity.slug %}" class="gen-button">
+                                                    <i class="fa fa-play"></i>
+                                                </a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="gen-info-contain">
                                         <div class="gen-movie-info">
-                                            <h3><a href="single-movie.html">{{ item.entity.title }}</a></h3>
+                                            {% if item.entity.category_id.title == 'movie' %}
+                                                <h3><a href="{% url 'movie:detail_movie' item.entity.slug %}">{{ item.entity.title }}</a></h3>
+                                            {% else %}
+                                                <h3><a href="{% url 'shows:detail_shows' item.entity.slug %}">{{ item.entity.title }}</a></h3>
+                                            {% endif %}
+
                                         </div>
                                         <div class="gen-movie-meta-holder">
                                             <ul>
                                                 <li>
-                                                    {% if item.entity.category_id.title == 'movie' %}
-                                                        Полнометражная картина
-                                                    {% else %}
-                                                        Сериал
-                                                    {% endif %}
+                                                    <i class="fas fa-eye"></i>
+                                                    {{item.entity.total_watch}}
                                                 </li>
                                                 <li>
                                                     {% for genre in item.genres %}
