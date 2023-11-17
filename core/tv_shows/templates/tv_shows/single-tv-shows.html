@@ -43,7 +43,7 @@
                                                 <li>{{ data.premier_dt }}</li>
                                                 <li>
                                                     {% for item in genre %}
-                                                        <a href="#"><span>{{ item.title }}</span></a>
+                                                        <a href="{% url 'genre:main_genre' item.slug %}"><span>{{ item.title }}</span></a>
                                                     {% endfor %}
                                                 </li>
                                                 <li>

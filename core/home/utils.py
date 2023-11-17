@@ -19,7 +19,7 @@ menu = {
 }
 
 
-class DataMixin:
+class MainPagesMixin:
     title: str = None
     page_items = None
     dispatch_ = None
