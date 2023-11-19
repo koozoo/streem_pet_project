@@ -24,6 +24,7 @@
                                         <h2 class="gen-title">S{{shows_item.season}}E{{shows_item.series}} | {{ video.title }}</h2>
                                         <div class="gen-single-meta-holder">
                                             <ul>
+                                                <li>{% include 'home/genre.html' with data=data %}</li>
                                                 <li>{{ shows_item.duration }} min</li>
                                                 <li>
                                                     <i class="fas fa-eye">
@@ -33,6 +34,7 @@
                                             </ul>
                                         </div>
                                         <p>{{ data.description }}</p>
+                                        {% include 'home/tags.html' with data=data %}
                                         <div class="gen-socail-share">
                                             <h4 class="align-self-center">Social Share :</h4>
                                             <ul class="social-inner">

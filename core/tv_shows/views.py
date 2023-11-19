@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.db.models import F
 
 from home.utils import MainPagesMixin
+from services.media_mixin import MediaMixin
 from tv_shows.models import Shows, ShowsItem
 from tv_shows.utils import ShowsBuilder
 from video.models import VideoForStreem
@@ -62,6 +63,16 @@ class DetailShows(TemplateView):
         views_counter = Shows.objects.get(status='p', slug=slug)
         views_counter.total_watch = F('total_watch') + 1
         views_counter.save()
+
+
+class SingleEpisode(MediaMixin):
+    template_name = 'tv_shows/single-tv-shows.html'
+    type = 'shows'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
 
 
 def single_shows(request, shows_slug: str):

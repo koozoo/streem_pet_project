@@ -1,0 +1,3 @@
+{% for item in data.genre.all %}
+    <a href="{% url 'genre:main_genre' item.slug %}"><span>{{ item.title.capitalize }}</span></a>
+{% endfor %}

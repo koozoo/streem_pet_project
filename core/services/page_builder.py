@@ -1,3 +1,5 @@
+from django.core.cache import cache
+
 import dataclasses
 from typing import List
 
@@ -122,26 +124,62 @@ class PageBuilder:
 
         for media_type_data in entity:
             for item in media_type_data:
-                if isinstance(item, Shows):
-                    type_ = 'shows'
-                    more_video_link = 'shows:detail_shows', item.slug
-                    videos = ShowsItem.objects.filter(shows_id=item.pk)
-                    genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
-                    tags = [{"slug": i.slug, "title": i.title} for i in item.tags.all()]
-                    actors = [{"slug": i.slug, "name": i.name} for i in item.actors.all()]
-                    showrunner = item.showrunner
-                elif isinstance(item, Movie):
-                    type_ = 'movie'
-                    more_video_link = 'movie:detail_shows', item.slug
-                    videos = item.video
-                    genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
-                    tags = [{"slug": i.slug, "title": i.title} for i in item.tags.all()]
-                    actors = [{"slug": i.slug, "name": i.name} for i in item.actors.all()]
-                    showrunner = item.showrunner
 
+                cache_item = f'media_cache:{item.title}'
+
+                cache_item_genre = cache_item + ':genre'
+                cache_item_tags = cache_item + ':tags'
+                cache_item_actors = cache_item + ':actors'
+                cache_item_showrunner = cache_item + ':showrunner'
+                cache_item_videos = cache_item + ':videos'
+
+                cache_genre = cache.get(cache_item_genre)
+                if cache_genre:
+                    genre = cache_genre
                 else:
-                    print(f'Unknowns entity: {item}')
-                    continue
+                    genre = [{"slug": i.slug, "title": i.title} for i in item.genre.all()]
+                    cache.set(cache_item_genre, genre, 60)
+
+                cache_tags = cache.get(cache_item_tags)
+                if cache_tags:
+                    tags = cache_tags
+                else:
+                    tags = [{"slug": i.slug, "title": i.title} for i in item.tags.all()]
+                    cache.set(cache_item_tags, tags, 60)
+
+                cache_actors = cache.get(cache_item_actors)
+                if cache_actors:
+                    actors = cache_actors
+                else:
+                    actors = [{"slug": i.slug, "name": i.name} for i in item.actors.all()]
+                    cache.set(cache_item_actors, actors, 60)
+
+                cache_showrunner = cache.get(cache_item_showrunner)
+                if cache_showrunner:
+                    showrunner = cache_showrunner
+                else:
+                    showrunner = item.showrunner
+                    cache.set(cache_item_showrunner, showrunner, 60)
+
+                cache_videos = cache.get(cache_item_videos)
+                if cache_videos:
+                    videos = cache_videos
+                else:
+                    if isinstance(item, Shows):
+                        type_ = 'shows'
+                        more_video_link = 'shows:detail_shows', item.slug
+                        videos = ShowsItem.objects.filter(shows_id=item.pk)
+
+                    elif isinstance(item, Movie):
+                        type_ = 'movie'
+                        more_video_link = 'movie:detail_shows', item.slug
+                        videos = item.video
+
+                    else:
+                        print(f'Unknowns entity: {item}')
+                        continue
+
+                    cache.set(cache_item_videos, cache_videos, 60)
 
                 result.append(PageBlockData(
                     title=item.title,

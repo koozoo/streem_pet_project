@@ -1,0 +1,4 @@
+
+{% for tag in data.tags.all %}
+    <a href="{% url 'tags:main_tags' tag.slug %}"><span>#{{ tag.title.capitalize }}, </span></a>
+{% endfor %}
