@@ -40,6 +40,12 @@ class Shows(models.Model):
     genre = models.ManyToManyField(to=Genre)
     tags = models.ManyToManyField(to=Tags)
     actors = models.ManyToManyField(to=Actors, blank=True, null=True)
+    media_type = models.CharField(max_length=30, default='shows')
+    create_at = models.DateField(auto_now_add=True)
+    new_episode = models.DateField(blank=True, null=True)
+    next_episode = models.DateField(blank=True, null=True)
+    poster = models.ImageField(upload_to='shows/poster/%Y/%m/%d', null=True, blank=True)
+    ads_keyword = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} | ID:{self.pk}"

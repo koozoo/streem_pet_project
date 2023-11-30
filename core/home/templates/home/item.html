@@ -6,7 +6,7 @@
       <div class="gen-carousel-movies-style-2 movie-grid style-2">
          <div class="gen-movie-contain">
             <div class="gen-movie-img">
-               <img src="{% get_media_prefix %}{{ data.entity.images }}" alt="">
+               <img src="{% get_media_prefix %}{{ data.entity.images }}" class="contrast-img" alt="{{ data.entity.title}}">
                <div class="gen-movie-action">
 
                   {% if data.type == 'movie' %}

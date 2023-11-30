@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 from django.db.models import F
@@ -28,7 +29,6 @@ class DetailShows(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        self._update_counter(slug=kwargs['shows_slug'])
         data, video = self._get_data_page(slug=kwargs['shows_slug'])
         self._videos(videos=video)
 
@@ -38,6 +38,8 @@ class DetailShows(TemplateView):
         context['total_video'] = self.total_video,
         context['total_seasons'] = [i + 1 for i in range(data.seasons)],
         context['genre'] = [{"pk": genre.pk, "title": genre.title.capitalize(), "slug": genre.slug} for genre in data.genre.all()]
+
+        self._update_counter(slug=kwargs['shows_slug'])
 
         return context
 
@@ -68,11 +70,53 @@ class DetailShows(TemplateView):
 class SingleEpisode(MediaMixin):
     template_name = 'tv_shows/single-tv-shows.html'
     type = 'shows'
+    _CACHE_EXPIRE_TIME = 60
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        self._update_view()
+
         return context
+
+    def _build_context(self, slug):
+
+        cache_item_name = f'media_cache_slug:{slug}'
+        media_cache = cache.get(cache_item_name)
+
+        if media_cache:
+            data = media_cache
+        else:
+            data = get_object_or_404(Shows.objects.filter(status='p', slug=slug))
+            cache.set(cache_item_name, data, self._CACHE_EXPIRE_TIME)
+
+        videos = ShowsItem.objects.filter(shows_id=data.pk, status='p')
+
+        if data:
+            video_cache_name = cache_item_name + ':video'
+            streem_cache_name = cache_item_name + ':streem'
+
+            video_cache = cache.get(video_cache_name)
+            if video_cache:
+                movie_video = video_cache
+            else:
+                movie_video = VideoForStreem.objects.filter(origin_video=data.video)
+                cache.set(video_cache_name, movie_video, self._CACHE_EXPIRE_TIME)
+
+            streem_cache = cache.get(streem_cache_name)
+            if streem_cache:
+                streem_items = streem_cache
+            else:
+                streem_items = {int(item.resolution): item for item in movie_video}
+                cache.set(streem_cache_name, streem_items, self._CACHE_EXPIRE_TIME)
+
+            return data, movie_video, streem_items
+
+    def _update_view(self):
+        # UPDATE BLOCK
+        views_counter = Shows.objects.get(status='p', slug=shows_slug)
+        views_counter.total_watch = F('total_watch') + 1
+        views_counter.save()
 
 
 def single_shows(request, shows_slug: str):
@@ -106,11 +150,12 @@ def single_shows(request, shows_slug: str):
         'genre': [{"pk": genre.pk, "title": genre.title.capitalize(), "slug": genre.slug} for genre in data.genre.all()]
 
     }
-    print(context)
+
     return render(request, 'tv_shows/single-tv-shows.html', context=context)
 
 
 def watch_series(request, shows_slug, season, pk_series):
+
     shows_info = get_object_or_404(Shows, slug=shows_slug)
     shows_item = get_object_or_404(ShowsItem, pk=pk_series)
 
@@ -124,7 +169,7 @@ def watch_series(request, shows_slug, season, pk_series):
             'streem_items': streem_items,
             'title': 'Сериалы'
         }
-        print(context)
+
         return render(request, 'tv_shows/single-episode.html', context=context)
     else:
         return render(request, 'tv_shows/tv-shows-home.html')
