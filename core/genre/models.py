@@ -12,7 +12,7 @@ class Genre(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField(blank=True, null=True)
-    images = models.ImageField(upload_to='genre_images/%Y/%m/%d', null=True, blank=True)
+    images = models.ImageField(upload_to='images/genre/%Y/%m/%d', null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='p', verbose_name='Статус')
 
     def get_absolute_url(self):

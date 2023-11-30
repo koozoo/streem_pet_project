@@ -511,38 +511,12 @@ Back to Top
 /*================================================
 Button Core
 ================================================*/
-input[type="button"],
-[type="reset"],
-[type="submit"] {
-    padding: 12px 30px;
-    font-family: var(--title-fonts);
-    font-size: 16px;
-    background: var(--primary-color);
-    color: var(--white-color);
-    text-transform: capitalize;
-    color: var(--white-color) !important;
-    display: inline-block;
-    border: none;
-    width: auto;
-    height: auto;
-    line-height: 2;
-    text-transform: uppercase;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    -webkit-transition: all 0.5s ease-in-out;
-}
 
-[type="button"]:hover,
+[type="reset"],
+
+
+
 [type="reset"]:hover,
-[type="submit"]:hover {
-    color: var(--white-color) !important;
-}
 
 .gen-button {
     text-transform: uppercase;
@@ -561,7 +535,7 @@ input[type="button"],
     overflow: hidden;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
-    border-radius: 18px;
+    border-radius: 10px;
 }
 
 .gen-button-dark {
@@ -3106,6 +3080,7 @@ header#gen-header.gen-header-style-1 .gen-bottom-header .navbar .navbar-nav li.a
     header#gen-header .gen-bottom-header .navbar .navbar-brand img{
         height: 45px;
     }
+
 }
 
 
@@ -6105,6 +6080,14 @@ Play Button
     width: 100%;
 }
 
+.contrast-img {
+    filter: contrast(0.5);
+}
+
+.contrast-img:hover {
+    filter: contrast(1.5);
+}
+
 .gen-front-image:before {
     content: "";
     position: absolute;
@@ -6376,6 +6359,186 @@ Icon-Box
 }
 
 /*===========================================================================================================*/
+
+.filter-container {
+    padding: 5px;
+    margin: 5px;
+
+}
+
+.filter_block {
+    padding: 20px;
+    background-color: #070A14;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.filter_block__form {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(280px,1fr));
+    grid-gap: 10px 20px;
+}
+
+.filter_block__cell {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: 0;
+    box-sizing: border-box;
+}
+.filter_block__cell-content {
+    padding: 0 4px 0 4px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.filter_block__cell-content select{
+    height: 36px;
+    line-height: 34px;
+    background-position: right 8px top 50%;
+    background-color: #FFFFFF);
+    color: var(--tt-2);
+    border-radius: 4px;
+    box-shadow: none;
+    font-size: 14px;
+    padding: 0 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.filter_block__cell-content__check-group {
+    display: flex;
+    justify-content: center;
+}
+.filter_block__cell-content__check-group label {
+    height: 36px;
+    line-height: 34px;
+    background-position: right 8px top 50%;
+    background-color: #FFFFFF);
+    color: var(--tt-2);
+    border-radius: 4px;
+    box-shadow: none;
+    font-size: 14px;
+    padding: 0 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.media-wrapper {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.media-collections {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(6,minmax(180px,1fr));
+}
+
+@media (min-width: 320px) and (max-width: 799px){
+    .media-collections {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2,minmax(180px,1fr));
+    }
+}
+
+@media (min-width: 800px) and (max-width: 921px){
+    .media-collections {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3,minmax(180px,1fr));
+    }
+}
+
+@media (min-width: 922px) and (max-width: 1500px){
+    .media-collections {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(4,minmax(180px,1fr));
+    }
+}
+
+
+.poster {
+    overflow: auto;
+    border-radius: 10px;
+    height: 326px;
+    weight: 206px;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.5);
+    padding: 20px;
+}
+
+.poster:hover {
+    text-decoration: none;
+    color: #FFFFFF;
+    filter: saturate(1.4);
+    transition: 0.5s;
+}
+
+div > .card-rank {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+div > .card-views {
+    position: absolute;
+    weight: 54px;
+    top: 50px;
+    right: 10px;
+}
+
+.card-link{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.card-title {
+    background-color: var(--dark-color);
+    padding: 0px 5px 0px 5px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 0px;
+}
+
+.card-title h5 {
+    font-size: 15px;
+    text-align: center;
+}
+
+.fa-star {
+    color: #e3f401;
+    opacity: 0.8;
+}
+
+.card-rank {
+    background-color: var(--dark-color);
+    padding: 0px 5px 0px 5px;
+    border-radius: 10px;
+    z-index: 10;
+    min-width: 50px;
+}
+
+.card-views {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-color);
+    padding: 0px 5px 0px 5px;
+    border-radius: 10px;
+    z-index: 10;
+    min-width: 50px;
+}
+
 
 
 

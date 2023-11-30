@@ -3,6 +3,7 @@ from django.core.cache import cache
 import dataclasses
 from typing import List
 
+from genre.models import Genre
 from movie.models import Movie
 from tv_shows.models import Shows, ShowsItem
 
@@ -67,6 +68,7 @@ class Page:
     meta: dict = None
     ads: dict = None
     keyword: dict = None
+    filter: dict = None
 
 
 class PageBuilder:

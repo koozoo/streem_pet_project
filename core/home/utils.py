@@ -1,4 +1,39 @@
+from django.core.cache import cache
+
+from genre.models import Genre
 from services.page_builder import PageBlock, Page, PageBuilder
+from tags.models import Tags
+
+
+def _init_filter(expire: int):
+    try:
+        genre_cache = cache.get('filter:genre')
+
+        if genre_cache:
+            genre = genre_cache
+        else:
+
+            genre = [item for item in Genre.objects.filter(status='p').values()]
+            cache.set('filter:genre', genre, expire)
+
+        tags_cache = cache.get('filter:tags')
+
+        if tags_cache:
+            tags = tags_cache
+        else:
+            tags = [item for item in Tags.objects.filter(status='p').values()]
+            cache.set('filter:tags', tags, expire)
+
+        return {
+            "genre": genre,
+            "sort": [{"slug": "total_watch", "title": "Просмотрам"},
+                     {"slug": "rank", "title": "Рейтингу"},
+                     {"slug": "new", "title": "Новинки"}],
+            "tags": tags,
+        }
+    except Exception as e:
+        print(e)
+
 
 menu = {
     'home': {
@@ -18,6 +53,8 @@ menu = {
     },
 }
 
+filter_ = _init_filter(expire=60)
+
 
 class MainPagesMixin:
     title: str = None
@@ -25,8 +62,7 @@ class MainPagesMixin:
     dispatch_ = None
     extra_context = {}
     blocks: list = None
-    genre: str = None
-    tags: str = None
+    filter: dict = None
 
     def __init__(self):
         if self.title:
@@ -34,16 +70,11 @@ class MainPagesMixin:
 
         if 'menu' not in self.extra_context:
             self.extra_context['menu'] = menu
-
+        if 'filter' not in self.extra_context:
+            self.extra_context['filter'] = filter_
         if self.page_items:
             self.extra_context['page_items'] = self.page_items
         else:
-            if self.tags:
-                ...
-
-            if self.genre:
-                ...
-
             try:
                 self._get_page_data(page_builder_callback=self.dispatch_)
                 self.extra_context['page_items'] = self.blocks

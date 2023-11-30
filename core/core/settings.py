@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'genre.apps.GenreConfig',
     'categories.apps.CategoriesConfig',
     'settings_page.apps.SettingsPageConfig',
-    'tags.apps.TagsConfig'
+    'tags.apps.TagsConfig',
+    'search.apps.SearchConfig'
 ]
 
 MIDDLEWARE = [

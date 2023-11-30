@@ -1,0 +1,32 @@
+<div class="col-lg-12 col-md-12">
+    <div class="gen-pagination">
+        <nav aria-label="Page navigation">
+            <ul class="page-numbers">
+
+                {% if page_obj.number != 1%}
+                    <li><a class="next page-numbers" href="?page=1">1</a></li>
+                {% else %}
+                    {% if  page_obj.number == 1 and page_obj.has_next %}
+                    <li><a class="page-numbers current" href="#">{{ page_obj.number }}</a></li>
+                    {% endif %}
+                {% endif %}
+
+                {# prev button page #}
+                {% if page_obj.has_previous and page_obj.previous_page_number != 1 %}
+                    <li><a class="next page-numbers" href="?page={{ page_obj.previous_page_number }}">Назад</a></li>
+                {% endif %}
+
+                {# current button page #}
+                {% if page_obj.number != 1 %}
+                    <li><a class="page-numbers current" href="#">{{ page_obj.number }}</a></li>
+                {% endif %}
+
+                {# next button page #}
+                {% if page_obj.has_next %}
+                    <li><a class="next page-numbers" href="?page={{ page_obj.next_page_number }}">Вперед</a></li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+</div>

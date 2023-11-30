@@ -26,7 +26,8 @@ urlpatterns = [
     path('shows/', include('tv_shows.urls', namespace='shows')),
     path('movie/', include('movie.urls', namespace='movie')),
     path('genres/', include('genre.urls', namespace='genre')),
-    path('tags/', include('tags.urls', namespace='tags'))
+    path('tags/', include('tags.urls', namespace='tags')),
+    path('filter/', include('search.urls', namespace='filter'))
 ]
 
 if settings.DEBUG is True:

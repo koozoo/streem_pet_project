@@ -1,0 +1,68 @@
+{% load static %}
+<section class="container filter-container">
+<!--    FILTER-->
+    <div class="filter_block">
+      <form class="filter_block__form">
+        <div class="filter-block__cell">
+            <div class="filter_block__cell-content">
+              <select name="genre" id="genre" aria-label="filter-genre">
+                  {% for genre in filter.genre %}
+                    <option value={{genre.slug}}>{{genre.title}}</option>
+                  {% endfor %}
+                  <option selected>Жанр</option>
+              </select>
+              <select name="sort" id="sort" aria-label="filter-sort">
+                <option selected>Сортировать по</option>
+                  {% for sort in filter.sort %}
+                    <option value={{sort.slug}}>{{sort.title}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+          </div>
+        <div class="filter-block__cell">
+            <div class="filter_block__cell-content">
+              <div class="btn-group filter_block__cell-content__check-group" role="group" aria-label="Basic checkbox toggle button group">
+
+                <input type="checkbox" class="btn-check" id="filter_shows_check" autocomplete="off">
+                <label class="btn btn-dark" for="filter_shows_check">TV сериал</label>
+
+                <input type="checkbox" class="btn-check" id="filter_movie" autocomplete="off">
+                <label class="btn btn-dark" for="filter_movie">Фильм</label>
+
+              </div>
+            </div>
+        </div>
+        <div class="filter-block__cell">
+            <div class="filter_block__cell-content">
+              <div class="input-group input-group-sm mb-3 lg-3">
+
+              <button type="button" class="btn btn-dark" id="filter-submit-btn">Подобрать</button>
+              <button type="button" class="btn btn-dark disabled" id="filter-reset-btn">Сбросить</button>
+
+            </div>
+            </div>
+        </div>
+
+      </form>
+    </div>
+<!--    END FILTER-->
+<!--    MEDIA CONTENT-->
+    <div class="media-wrapper">
+      <div class="media-collections" id="media-collections">{% include 'home/media_collections_loader.html' %}</div>
+    </div>
+<!--    END MEDIA CONTENT-->
+
+<!--    PAGINATION-->
+    {% if page_obj %}
+    <nav aria-label="media-pagination">
+      <ul class="pagination pagination-sm">
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">1</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+      </ul>
+    </nav>
+    {% endif %}
+<!--    END PAGINATION-->
+</section>

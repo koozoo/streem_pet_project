@@ -7,6 +7,7 @@
 
       {% if item.block_info.type  == 'banner' %}
          {% include 'home/banner.html' with block_data=item.data %}
+         {% include 'home/filter.html' %}
       {% else %}
          {% include 'home/page_block_item.html' with info=item.block_info block_data=item.data %}
       {% endif %}
@@ -14,6 +15,8 @@
    {% endfor %}
 
 {% endblock %}
+
+
 
 {% block footer %}
    <!-- footer start -->

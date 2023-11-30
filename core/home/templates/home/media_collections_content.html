@@ -1,0 +1,27 @@
+{% load static %}
+{% for item in media %}
+
+    {% if item.media_type == 'movie' %}
+        <div class="shadow-bt">
+            <a href="{% url 'movie:detail_movie' item.slug %}" class="card-link">
+                <div class="poster" style="background-image: url('{% get_media_prefix %}{{ item.images }}');">
+                  <div class="card-rank"><i class="fas fa-star" style="color: #e8ec13, opacity=0.8;"></i> 10 </div>
+                  <div class="card-views"><i class="fas fa-eye"></i> {{item.total_watch}} </div>
+                </div>
+                <div class="card-title"><h5 >{{ item.title }}</h5></div>
+            </a>
+        </div>
+    {% else %}
+        <div class="shadow-bt">
+            <a href="{% url 'shows:detail_shows' item.slug %}" class="card-link">
+                <div class="poster" style="background-image: url('{% get_media_prefix %}{{ item.images }}');">
+                  <div class="card-rank"><i class="fas fa-star" style="color: #e8ec13, opacity=0.8;"></i> 10 </div>
+                  <div class="card-views"><i class="fas fa-eye"></i> {{item.total_watch}} </div>
+                </div>
+                <div class="card-title"><h5 >{{ item.title }}</h5></div>
+            </a>
+        </div>
+    {% endif %}
+
+{% endfor %}
+

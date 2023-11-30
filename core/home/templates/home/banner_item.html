@@ -45,7 +45,7 @@
                                        <div class="gen-meta-info">
                                           <ul class="gen-meta-after-excerpt">
                                              <li>
-                                                <strong>Cast :</strong>
+                                                <strong>Актеры :</strong>
                                                 {% for actor in actors %}
                                                    <span>
                                                       <a href="#">
@@ -54,7 +54,7 @@
                                                 {% endfor %}
                                              </li>
                                              <li>
-                                                <strong>Category :</strong>
+                                                <strong>Категория :</strong>
                                                 <span>
 
                                                    <a href="{% url 'home' %}">
@@ -62,7 +62,7 @@
                                                 </span>
                                              </li>
                                              <li>
-                                                <strong>Genre :</strong>
+                                                <strong>Жанр :</strong>
                                                 {% for item in genres %}
                                                    <span>
                                                       <a href="{% url 'genre:main_genre' item.slug %}">
@@ -71,7 +71,7 @@
                                                 {% endfor %}
                                              </li>
                                              <li>
-                                                <strong>Tag :</strong>
+                                                <strong>Теги :</strong>
                                                 {% for tag in tags_data %}
                                                    <span>
                                                       <a href="{% url 'tags:main_tags' tag.slug %}">
